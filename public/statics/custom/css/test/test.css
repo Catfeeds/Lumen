@@ -1,0 +1,467 @@
+.wt,
+.wo {
+    border-radius: 50%;
+    background-color: skyblue;
+    width: 2.5em;
+    height: 2.5em;
+    line-height: 2.5em;
+    text-align: center;
+    display: inline-block;
+}
+
+.left-box {
+    width: 400px;
+}
+
+.right-box {
+    width: calc(100% - 400px);
+    padding: 0 16px;
+}
+
+.wo {
+    background-color: pink;
+}
+
+.common-border {
+    border: 1px solid #eee;
+}
+
+.common-wt {
+    height: 40px;
+    line-height: 40px;
+    border: 1px solid #eee;
+    cursor: pointer
+}
+
+.wo-box {
+    /* max-height: 200px; */
+    overflow: hidden;
+    height: 0;
+    transition: all .8s;
+}
+
+.wo-list {
+    height: 40px;
+    line-height: 40px;
+    border: 1px solid #eee;
+    cursor: pointer;
+    padding-left: 20px;
+}
+
+.wo-tips {
+    min-width: 200px;
+}
+
+/* ----------------------------- */
+
+.po-number {
+    color: #c3a711;
+}
+
+.po-box {
+    border: 1px solid #eee;
+    height: 262px;
+    background-color: #fafbfc;
+}
+
+.po-data {
+    display: flex;
+}
+
+.po-data>li>div {
+    flex: 1;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.po-data>li:first-child>div {
+    /* min-height: 50px;
+    line-height: 50px;
+    font-size: 14px; */
+    font-weight: bold
+}
+
+.wt-box {
+    /* width: 320px; */
+    opacity: 0;
+}
+
+.showop {
+    opacity: 1;
+}
+
+
+
+.wo-ico {
+    background-color: #eee;
+    position: absolute;
+    transform: translate(100%, -40px);
+    width: 400px;
+    border-right: 1px solid pink;
+}
+
+.select-coll {
+    /* height: auto; */
+    /* overflow: hidden; */
+    transition: all 1s;
+}
+
+.totals {
+    float: right;
+}
+
+.product-workshorp {
+    min-height: 340px;
+    /* border: 1px solid #eee; */
+    box-shadow: 0 0 24px 2px #eee;
+    padding: 20px;
+    /* display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start; */
+    overflow: hidden;
+    margin-top: 12px;
+}
+
+.workshop-items {
+    width: 25%;
+    min-width: 200px;
+    height: 160px;
+    padding: 0 10px;
+    margin: 10px 0;
+}
+
+.workshop-items-box {
+    border: 1px solid #eee;
+    height: 100%;
+    text-align: center;
+    padding: 10px;
+    transition: box-shadow .8s;
+}
+
+.workshop-items-box:hover {
+    box-shadow: 0 0 20px 2px #eee;
+}
+
+.gant {
+    display: flex;
+    height: 280px;
+    overflow: hidden;
+    user-select: none;
+    border: 1px solid #eee;
+    box-shadow: 0 0 24px 2px #eee;
+}
+
+.gant-left,
+.gant-right {
+    position: relative;
+}
+
+.gant-left {
+    min-width: 300px;
+    overflow: hidden;
+    background-color: #fafbfc;
+    border-right: 1px solid #eee;
+    z-index: 2;
+}
+
+.scroll-box {
+    height: 100%;
+    position: relative;
+}
+
+.gant-header {
+    height: 54px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+}
+
+.gant-contene {
+    height: calc(100% - 54px);
+}
+
+.gant-title-keyname {
+    border-right: 1px solid #eee;
+    flex: 1;
+    line-height: 54px;
+    text-align: center
+}
+
+.gant-title-keyname:last-child {
+    border: none;
+}
+
+.date-month {
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    font-weight: 700;
+    border-bottom: 1px solid #eee;
+    border-right: 1px solid #eee;
+}
+
+.date-day {
+    white-space: nowrap;
+}
+
+.date-day-item {
+    display: inline-block;
+    height: 24px;
+    width: 48px;
+    line-height: 24px;
+    text-align: center;
+    border-right: 1px solid #eee;
+    box-sizing: border-box
+}
+
+.gant-line,
+.gant-line-bar {
+    height: 24px;
+    line-height: 24px;
+    border-bottom: 1px solid #eee;
+    box-sizing: border-box
+}
+
+.gant-line-bar {
+    padding: 6px 0;
+}
+
+.gant-item {
+    flex: 1;
+    text-align: center
+}
+
+.gant-bar {
+    border-radius: 4px;
+}
+
+.gant-bar-int {
+    text-align: center;
+    height: 100%;
+    border-radius: 4px;
+    background-color: #ccc;
+    width: 20%;
+    font-size: 10px;
+    line-height: 10px;
+}
+
+
+
+/* ===================================================================================================== */
+#routing_graph>canvas {
+    height: 260px;
+}
+
+ 
+.scroll-screen {
+    width: 200%;
+    transition: transform 1s;
+}
+.scroll-screen.move-scroll-screen{
+    transform: translateX(-50%);
+}
+
+.color-chose{
+    background-color: #D7F2FF;
+    border-color: #00A0E9;
+    color: #00A0E9;
+}
+.common-wt .wt-split {
+    display: inline-block;
+    height: 18px;
+    line-height: 18px;
+    padding: 0 3px;
+    background: #00a0e9;
+    color: #fff;
+    border-radius: 3px;
+    font-size: 10px;
+}
+.wo-box .wo-deinfo{
+	display: inline-block;
+    /* color: #e83e2c; */
+    color: pink;
+	font-size: 18px;
+}
+.or-single-btn {
+    background: #73D348;
+    border-radius: 3px;
+    color: #fff;
+    padding: 0 3px;
+    font-size: xx-small;
+    margin-left: 10px;
+    font-weight: 400;
+}
+
+
+.work_center_item {
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+.work_center_item .item_infor {
+    font-size: 14px;
+    color: #333;
+}
+.work_center_item .item_infor .infor_name {
+    margin-right: 20px;
+}
+.work_center_item .item_infor .infor_opName {
+    margin-left: 20px;
+}
+.work_center_item .item_infor .infor_all {
+    margin-left: 20px;
+}
+.work_center_item .item_infor .infor_remain {
+    margin-left: 20px;
+}
+.work_center_item .item_progress_out {
+    background-color: #eee;
+    /* transform: translateX(96px); */
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+    position: relative;
+}
+.work_center_item .item_progress_in {
+    background-color: #5B9BD5;
+    /* transform: translateX(96px); */
+    width: 0%;
+    height: 40px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+    line-height: 40px;
+    text-align: center;
+}
+.woDisEable {
+    background-color: #eef1f6;
+}
+.btn-remove-disabled {
+    background-color: #FBFBFB;
+    color: #D3C9CC;
+    border-color: #D3C9CC;
+}
+.btn-remove-disabled:hover {
+    background-color: #FBFBFB;
+    color: #D3C9CC;
+    border-color: #D3C9CC;
+}
+.note-tip {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 50%;
+    background: #EDED34;
+    text-align: center;
+    margin-left: 15px;
+    margin-right: 20px;
+} 
+.work-process {
+    border-radius: 3px;
+    padding: 0 3px;
+    color: #fff;
+}
+
+
+
+/* 后来优化布局 ---- cm */
+.div_con_wrapper .top-section {
+    display: flex;
+    height: 300px;
+    margin-bottom: 20px;
+}
+.div_con_wrapper .top-section .left-po {
+    width: 400px;
+    background: #F3F3F3;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: #aaa 0px 0px 20px 1px;
+}
+.div_con_wrapper .top-section .right-img{
+    width: calc(100% - 400px);
+    background: #F3F3F3;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: #aaa 0px 0px 20px 1px;
+    margin-left: 20px;
+}
+.div_con_wrapper .top-section .right-img .img-btn {
+    padding-left: 10px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+.po-number {
+    padding-left: 10px;
+}
+.gant {
+  height: 260px;
+}
+.gant-right {
+    background-color: #fafbfc;
+}
+#routing_graph>canvas {
+    height: 239px;
+}
+.div_con_wrapper .bottom-main {
+    width: 100%;
+    background-color: #fafbfc;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: #aaa 0px 0px 20px 1px;
+}
+.div_con_wrapper .bottom-main .bottom-title {
+    padding-left: 10px;
+    color: #c3a711;
+    height: 40px;
+    line-height: 40px;
+    margin: 0;
+    background: #F3F3F3;
+}
+.div_con_wrapper .bottom-main .bottom-section {
+    display: flex;
+}
+.div_con_wrapper .bottom-main .left-workOrderDetails {
+    width: 400px;
+}
+.div_con_wrapper .bottom-main .left-workOrderDetails .left-title, .workCenter-title  {
+    padding-left: 10px;
+    height: 40px;
+    line-height: 40px;
+    margin: 0;
+    background: #F3F3F3;
+}
+.div_con_wrapper .bottom-main .left-workOrderDetails .wt-box {
+    background-color: #fafbfc;
+    overflow: hidden;
+}
+.div_con_wrapper .bottom-main .right-workCenter {
+    width: calc(100% - 400px);
+    background-color: #fafbfc;
+    overflow: hidden;
+    margin-left: 20px;
+}
+.product-workshorp {
+    margin: 0 10px 10px 10px;
+}
+.btn-disabled {
+    background-color: #ddd !important;
+    border-color: #ddd !important;
+} 
+.wt-note {
+    color:#fff;
+}
+.title-comm {
+    color:#0097E7;
+    /* border-left: 4px solid #0097E7; */
+}
+.circle {
+    display: inline-block;
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+    border: 2px solid #0098E7;
+    margin-right: 10px;
+}

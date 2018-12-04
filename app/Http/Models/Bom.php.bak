@@ -1,0 +1,1219 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: rick
+ * Date: 2017/11/23
+ * Time: 10:28
+ */
+
+namespace App\Http\Models;//定义命名空间
+use App\Libraries\BomIterator;
+use Illuminate\Support\Facades\DB;
+use App\Libraries\Trace;
+
+/**
+ * BOM操作类
+ * @author  rick
+ * @time    2017年10月19日13:39:39
+ */
+class Bom extends Base
+{
+
+    /**
+     * 前端传递的api主键名称
+     * @var string
+     */
+    public  $apiPrimaryKey='bom_id';
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->table   = config('alias.rb');
+    }
+
+//region 检
+
+    /**
+     * 制定规则
+     * @return array
+     */
+    public function getRules()
+    {
+        return array(
+
+            'code'   => array('name'=>'code','type'=>'string','require'=>true,'on'=>'add,update','desc'=>'物料清单编码'),
+            'name'   => array('name'=>'name','type'=>'string','require'=>true,'on'=>'add,update','desc'=>'名称'),
+            'version'=> array('name'=>'version','type'=>'string','require'=>false,'on'=>'add,update','desc'=>'版本'),
+            'version_description' => array('name'=>'version_description','max'=>200,'type'=>'string','require'=>false,'on'=>'add,update','desc'=>'版本描述'),
+            'bom_group_id' => array('name'=>'bom_group_id','default'=>'','type'=>'int','require'=>false,'extra'=>'1','on'=>'add,update','desc'=>'bom组id'),
+            'qty' => array('name'=>'qty','type'=>'int','default'=>1,'require'=>false,'on'=>'add,update','desc'=>'基础质量'),
+            'material_id' => array('name'=>'material_id','type'=>'int','require'=>true,'on'=>'add,update','desc'=>'物料id'),
+            'description' => array('name'=>'description','default'=>'','type'=>'string','max'=>500,'require'=>false,'on'=>'add,update','desc'=>'描述'),
+            'loss_rate' => array('name'=>'loss_rate','type'=>'int','require'=>false,'default'=>0.00,'min'=>0.00,'max'=>99.99,'on'=>'add,update','desc'=>'损耗率'),
+            'bom_tree'=>array('name'=>'bom_tree','type'=>'array','format'=>'json','require'=>true,'on'=>'add,update','desc'=>'常规中项的添加'),
+            'is_upgrade' =>array('name'=>'is_upgrade','type'=>'int','require'=>true,'on'=>'update','desc'=>'是否升级'),
+            'cookie' => array('name'=>'cookie','type'=>'string','require'=>true,'on'=>'add,update','desc'=>'客户端cookie'),
+            'bom_id' => array('name'=>'bom_id','type'=>'int','require'=>true,'on'=>'update,changeStatus','desc'=>'物料清单ID'),
+            'type' => array('name'=>'type','type'=>'string','require'=>true,'on'=>'changeStatus','desc'=>'类型'),
+            'status' => array('name'=>'status','type'=>'int','require'=>true,'on'=>'changeStatus','desc'=>'状态'),
+
+
+        );
+    }
+
+
+    /**
+     * 对字段进行检查
+     * @param $input  array 要过滤判断的get/post数组
+     * @return void         址传递,不需要返回值
+     * @author  sam.shan@ruis-ims.cn
+     * @todo 后面统一放置到rick的Rules中
+     */
+    public function checkFormFields(&$input)
+    {
+
+        //用户id
+        //if(empty($input['cookie']))  TEA('700','cookie');
+        $input['creator_id']=$this->getUserFieldByCookie($input['cookie'],'id');
+
+        //附件信息参数检测
+        $this->checkAttachmentsFormFields($input);
+
+    }
+
+    /**
+     * 检查附件信息字段
+     * @param $input
+     * @author  sam.shan  <sam.shan@ruis-ims.cn>
+     */
+    public function checkAttachmentsFormFields(&$input)
+    {
+        //1.attachments 物料附件N
+        #1.1参数类型
+        if(!isset($input['attachments']) || !is_json($input['attachments'])) TEA('701','attachments');
+        #1.2 转成数组
+        $input['attachments']=json_decode($input['attachments'],true);
+        #1.3 传递的数据源是否正确,顺便转成ref
+        $input['input_ref_arr_attachments']=[];
+        foreach( $input['attachments'] as $key =>$value){
+            $has=$this->isExisted([['id','=',$value['attachment_id']]],config('alias.attachment'));
+            $input['input_ref_arr_attachments'][$value['attachment_id']]=$value;
+            if(!$has)  TEA('700','attachments');
+        }
+
+    }
+
+
+//endregion
+
+//region 查
+    /**
+     * 查看Bom详情
+     * @param $id
+     * @return mixed
+     * @throws \App\Exceptions\ApiException
+     * @author  sam.shan <sam.shan@ruis-ims.cn>
+     */
+    public function get($id)
+    {
+        $fields= ['id as bom_id','code','name','version','version_description','material_id',
+            'bom_group_id','qty','loss_rate','description','status','is_version_on','creator_id','ctime','mtime'
+        ];
+        $obj =$this->getRecordById($id,$fields);
+        if (!$obj) TEA('404');
+        //时间格式转换
+        $obj->ctime=$obj->ctime>0?date('Y-m-d H:i:s',$obj->ctime):'';
+        $obj->mtime=$obj->mtime>0?date('Y-m-d H:i:s',$obj->mtime):'';
+        //用户名
+        $obj->creator_name='';
+        if(!empty($obj->creator_id)) $obj->creator_name=$this->getFieldValueById($obj->creator_id,'name',config('alias.u'));
+        //Bom组名称
+        $obj->bom_group_name='';
+        if(!empty($obj->bom_group_id)) $obj->bom_group_name=$this->getFieldValueById($obj->bom_group_id,'name',config('alias.rbg'));
+        //bom顶级母件编码
+        $obj->item_no=$this->getFieldValueById($obj->material_id,'item_no',config('alias.rm'));
+
+        //获得bom树
+        $obj->bom_tree=$this->getBomTree($obj->material_id,$obj->version,true,true);
+
+        //获取bom的关联附件
+        $obj->attachments=$this->getBomAttachments($id);
+
+        return $obj;
+    }
+
+
+    /**
+     * 获取BOM附件
+     * @param $bom_id
+     * @return mixed
+     */
+    public function getBomAttachments($bom_id)
+    {
+        $obj_list=DB::table(config('alias.rba').' as rba')
+            ->where('rba.bom_id',$bom_id)
+            ->leftJoin(config('alias.attachment').' as attach', 'rba.attachment_id', '=', 'attach.id')
+            ->leftJoin(config('alias.u').' as u','attach.creator_id','=','u.id')
+            ->select(
+                'rba.bom_id',
+                'rba.attachment_id',
+                'rba.comment',
+                'u.name as creator_name',
+                'attach.name',
+                'attach.filename',
+                'attach.path',
+                'attach.size',
+                'attach.ctime',
+                'attach.creator_id'
+            )->get();
+        //遍历装饰数据(一般不在M层处理)
+        foreach($obj_list as $key=>&$value){
+            $value->ctime=date('Y-m-d H:i:s',$value->ctime);
+        }
+        return $obj_list;
+    }
+
+    /**
+     * 获得BOM分页列表
+     * @param $input
+     * @return object list
+     * @author rick
+     * @reviser sam.shan  <sam.shan@ruis-ims.cn>
+     */
+    public function getBomList(&$input)
+    {
+
+        //1.创建公共builder
+             //1.1where条件预搜集
+        !empty($input['code']) &&  $where[]=['rb.code','like','%'.$input['code'].'%']; //物料清单编码
+        !empty($input['name']) &&  $where[]=['rb.name','like','%'.$input['name'].'%'];  //物料清单名称
+        isset($input['status']) && is_numeric($input['status']) &&  $where[]=['rb.status',$input['status']];  //冻结或者激活
+        isset($input['is_version_on']) &&  is_numeric($input['is_version_on']) &&  $where[]=['rb.is_version_on',$input['is_version_on']];  //生效版本
+        !empty($input['item_material_path']) &&  $where[]=['rb.item_material_path','like','%'.$input['item_material_path'].'%'];  //Bom物料项
+        !empty($input['replace_material_path']) &&  $where[]=['rb.replace_material_path','like','%'.$input['replace_material_path'].'%'];  //Bom替代物料项
+        !empty($input['creator_name']) && $where[] = ['u.name', 'like', '%' . $input['creator_name'] . '%'];//创建人
+        !empty($input['bom_group_id']) &&  $where[]=['rbg.id',$input['bom_group_id']];  //组号
+            //1.2 预生成builder,注意仅仅在get中需要的连表请放在builder_get中
+        $builder = DB::table($this->table.' as rb')
+            ->select('rb.id as bom_id', 'rb.creator_id','rb.bom_group_id','rb.name as bom_name','rb.code','rb.qty','rb.version','rb.ctime','rb.status','rb.is_version_on', 'rb.description',
+                'u.name as creator_name',
+                'rbg.name as bom_group_name')->groupBy('rb.material_id')
+            ->leftJoin(config('alias.u').' as u', 'u.id', '=', 'rb.creator_id')
+            ->leftJoin(config('alias.rbg').' as rbg', 'rbg.id', '=', 'rb.bom_group_id');
+            //1.3 where条件拼接
+        if (!empty($where)) $builder->where($where);
+        //2.总共有多少条记录
+        $input['total_records'] = $builder->count();
+        //3.select查询
+        $builder_get=$builder;
+             //3.1 拼接不同于公共builder的条件
+        $builder_get->offset(($input['page_no']-1)*$input['page_size'])->limit($input['page_size']);
+             //3.2 order拼接
+        if (!empty($input['order']) && !empty($input['sort'])) $builder->orderBy('rb.' . $input['sort'], $input['order']);
+        $builder_get->orderBy('rb.id','desc');
+             //3.3 get获取接口
+        $obj_list = $builder_get->get();
+
+        //4.遍历处理一下数据
+        foreach($obj_list as $key=>&$value){
+            //矫正分组带来的错误(当然也可以使用子查询来修正的)
+            if($value->version !=1){
+             $bom=DB::table($this->table)->select('id','name','code','qty','is_version_on','version','ctime','status','description','creator_id','bom_group_id')->where('code',$value->code)
+                                                      ->where('version',1)->first();
+            //重新赋值
+             $value->bom_id=$bom->id;
+             $value->name=$bom->name;
+             $value->qty=$bom->qty;
+             $value->version=$bom->version;
+             $value->ctime=$bom->ctime;
+             $value->status=$bom->status;
+             $value->is_version_on=$bom->is_version_on;
+             $value->description=$bom->description;
+             if($value->creator_id != $bom->creator_id){
+                $value->creator_id=$bom->creator_id;
+                $value->creator_name=$this->getFieldValueById($value->creator_id,'name',config('alias.u'));
+             }
+             if($value->bom_group_id != $bom->bom_group_id){
+                 $value->bom_group_id=$bom->bom_group_id;
+                 $value->bom_group_name=$this->getFieldValueById($value->bom_group_id,'name',config('alias.rbg'));
+             }
+            }
+            //创建时间
+            $value->ctime=!empty($value->ctime)?date('Y-m-d H:i:s',$value->ctime):'';
+            //版本包含
+            $value->versions=DB::table($this->table)->where('code','=',$value->code)->pluck('version');
+            //生效的版本
+            $value->release_version=$this->getFieldValueByWhere([['code','=',$value->code],['status','=',1],['is_version_on','=',1]],'version');
+        }
+        return $obj_list;
+    }
+
+
+
+    /**
+     * 根据bom母件获取Bom树节点
+     * @param $bom_material_id    int   bom母件material_id值
+     * @param $version       int        版本号,默认值为1
+     * @param $replace            bool
+     * @param $bom_item_qty_level bool
+     * @author sam.shan <sam.shan@ruis-ims.cn>
+     */
+    public function getBomTree($bom_material_id,$version=1,$replace=FALSE,$bom_item_qty_level=False)
+    {
+
+        //第一步 获取Bom母件信息
+        $trees=$this->getRecordById($bom_material_id,['id as material_id','name','item_no'],config('alias.rm'));
+        if(empty($trees)) TEA('404','bom_material_id');
+        //第二步  获取bom_id
+        $bom_id=$this->getFieldValueByWhere([['material_id','=',$bom_material_id],['version','=',$version]],'id',config('alias.rb'));
+        //第三步  获取母件儿子们的信息,注意 只有它的儿子们的bom_id值才是$bom_id额
+        $trees->children=$this->getParentItemSons($bom_id,$replace,$bom_item_qty_level);
+        return $trees;
+
+    }
+
+    /**
+     * 获取bom子项阶梯用量信息
+     * @param $bom_item_id
+     * @return mixed
+     * @author sam.shan   <sam.shan@ruis-ims.cn>
+     */
+    public function  getBomItemQtyLevel($bom_item_id)
+    {
+
+        $obj_list=DB::table(config('alias.rbiql'))
+            ->select('id as bom_item_qty_level_id','bom_item_id','parent_min_qty','qty')
+            ->where('bom_item_id',$bom_item_id)
+            ->get();
+        return $obj_list;
+    }
+
+    /**
+     * 根据条件获取物料子项信息
+     * @param $where
+     * @return mixed
+     * @author sam.shan <sam.shan@ruis-ims.cn>
+     */
+    public function getBomItemList($where)
+    {
+        if(!is_array($where) || empty($where)) return [];
+
+        $obj_list=DB::table(config('alias.rbi').' as rbi')
+            ->select(
+                'rm.id as material_id','rm.name','rm.item_no',
+                'rbi.id as bom_item_id','rbi.bom_id','rbi.loss_rate','rbi.is_assembly','rbi.usage_number','rbi.total_consume','rbi.parent_id','rbi.comment','rbi.version',
+                'uu.label as unit','uu.commercial'
+            )
+            ->where($where)
+            ->leftJoin(config('alias.rm').' as rm','rbi.material_id','=','rm.id')
+            ->leftJoin(config('alias.uu').' as uu', 'rm.unit_id', '=', 'uu.id')
+            ->get();
+        return $obj_list;
+    }
+
+    /**
+     * 寻找物料项的替代物料
+     * @param $parent_id
+     * @return mixed
+     * @author  sam.shan  <sam.shan@ruis-ims.cn>
+     */
+    public function getReplaceItems($parent_id,$replace,$bom_item_qty_level)
+    {
+
+        //获取伪儿子们
+        $where=[['rbi.parent_id','=',$parent_id]];
+        $obj_list=$this->getBomItemList($where);
+        //递归遍历伪儿子们
+        foreach($obj_list  as $key=>&$value){
+            //看看伪儿子们是否有bom结构
+            $value->has_bom=$this->isExisted([['material_id','=',$value->material_id]],config('alias.rb'));
+            //伪儿子们的阶梯配置信息
+            if($bom_item_qty_level)  $value->bom_item_qty_levels=$this->getBomItemQtyLevel($value->bom_item_id);
+            //给伪儿子们找儿子(递归下去就是一条家谱树)
+            $value->children=[];
+            if($value->is_assembly) {
+                $value->versions=DB::table($this->table)->where('material_id','=',$value->material_id)->pluck('version');
+                $bom_id=$this->getFieldValueByWhere([['material_id','=',$value->material_id],['version','=',$value->version]],'id',config('alias.rb'));
+                $value->children=$this->getParentItemSons($bom_id,$replace,$bom_item_qty_level);
+            }
+        }
+        return $obj_list;
+    }
+
+    /**
+     * 获取母件的儿子
+     * @param $material_id
+     * @author sam.shan <sam.shan@ruis-ims.cn>
+     */
+    public  function getParentItemSons($bom_id,$replace,$bom_item_qty_level)
+    {
+        //获取每个父节点的儿子们(不含伪儿子-儿子们的替身)
+        $where=[['rbi.parent_id','=',0],['rbi.bom_id','=',$bom_id]];
+        $obj_list=$this->getBomItemList($where);
+        //递归遍历亲儿子们
+        foreach($obj_list as $key=>&$value){
+            //看看儿子们是否有bom结构
+            $value->has_bom=$this->isExisted([['material_id','=',$value->material_id]],config('alias.rb'));
+            //儿子们的阶梯配置信息
+            if($bom_item_qty_level)  $value->bom_item_qty_levels=$this->getBomItemQtyLevel($value->bom_item_id);
+            //儿子们的替身-注意替身可能也有儿子以及阶梯配置额,另外儿子的替身不可能有替身的,但是儿子的替身的子孙可能有替身额
+            $replaces=$this->getReplaceItems($value->bom_item_id,$replace,$bom_item_qty_level);
+            if($replace) $value->replaces=$replaces;
+            //给儿子们找儿子(递归下去就是一条家谱树)
+            $value->children=[];
+            if($value->is_assembly){
+                $value->versions=DB::table($this->table)->where('material_id','=',$value->material_id)->pluck('version');
+                $bom_id=$this->getFieldValueByWhere([['material_id','=',$value->material_id],['version','=',$value->version]],'id',config('alias.rb'));
+                $value->children=$this->getParentItemSons($bom_id,$replace,$bom_item_qty_level);
+            }
+        }
+        return $obj_list;
+
+    }
+
+    /**
+     * 根据物料ID获取设计bom
+     * @param $material_id
+     * @return mixed
+     */
+    public function getDesignBom($material_id)
+    {
+        $bom = DB::table(config('alias.rb').' as rb' )
+            ->select('rb.id as bom_id','rb.status','rb.is_version_on','material_id','rb.code','rb.name','rb.version','rb.version_description','u.name as user_name')
+            ->leftJoin(config('alias.u').' as u','rb.creator_id','=','u.id')
+            ->where('rb.material_id',"=",$material_id)
+            ->get();
+        return $bom;
+
+    }
+
+    public function releaseBeforeCheck($material_id)
+    {
+        $bom_item = DB::table(config('alias.rbi'))
+            ->select('id')
+            ->where('material_id',"=",$material_id)
+            ->count();
+        return $bom_item;
+    }
+
+
+//endregion
+
+//region 增
+    /**
+     * bom的添加接口
+     * @param $input
+     * @return mixed
+     */
+    public function add(&$input)
+    {
+
+        $this->checkRules($input);
+        $this->checkFormFields($input);
+        $bom_tree   = $input['bom_tree'];
+        try {
+            //开启事务
+            DB::connection()->beginTransaction();
+            //1.物料清单基础资料添加
+            $bom_id=$this->addBom($input);
+
+            //2.物料清单项添加
+            if(!empty($bom_tree)){
+                $result = $this->addBomItem($bom_tree,$bom_id,$input['material_id']);
+                //3.更新bom
+                if(is_array($result)) $this->updateBom($result,$bom_id);
+            }
+
+            //4.保存bom附件
+            if(!empty($input['input_ref_arr_attachments'])) $this->saveBomAttachments($input['input_ref_arr_attachments'],$bom_id,$input['creator_id']);
+        } catch (\ApiException $e) {
+            //回滚
+            DB::connection()->rollBack();
+            TEA($e->getCode());
+        }
+        DB::connection()->commit();
+        return $bom_id;
+
+
+
+
+    }
+
+    /**
+     * 物料清单基础资料添加
+     * @param $input
+     * @return mixed
+     */
+    public function addBom($input)
+    {
+        //获取入库数组
+        $data = [
+            'code'=>$input['code'],//bom编码
+            'name'=>$input['name'],//名称
+            'version'=>$input['version'],//版本
+            'version_description'=>$input['version_description'],//版本介绍
+            'material_id'=>$input['material_id'],//物料id
+            'loss_rate'=>$input['loss_rate'],
+            'status'  => isset($input['status'])?$input['status']:0,
+            'bom_group_id'=>$input['bom_group_id'],
+            'qty'=>$input['qty'],
+            'description'=>$input['description'],
+            'creator_id'=>$input['creator_id'],
+            'mtime'=>time(),//最后修改时间
+            'ctime'=>time(),//创建时间
+        ];
+        //入库
+        $insert_id = DB::table($this->table)->insertGetId($data);
+        if (!$insert_id) TEA('802');
+        //添加日志
+        $events=['action'=>'add', 'desc'=>'添加物料清单['.$input['name'].']基础信息'];
+        Trace::save($this->table,$insert_id,$input['creator_id'],$events);
+        return $insert_id;
+    }
+    /**
+     * 插入物料子项以及替换物料
+     * @param $bom_tree
+     * @param $bom_id
+     * @param $bom_material_id
+     * @return array|bool
+     */
+    public function addBomItem($bom_tree,$bom_id,$bom_material_id)
+    {
+        //物料id
+        $item_material_ids         = array();
+        //替换物料id
+        $item_replace_material_ids = array();
+        //阶梯数据
+        $qtyData = array();
+        //替换项
+        $replaceData = array();
+        $i = 0;
+        //遍历前端非空数据
+        foreach ($bom_tree as $row){
+            //加入子类以及自身的物料id
+            $item_material_ids = array_merge($item_material_ids,$row['son_material_id']);
+            array_push($item_material_ids,$row['material_id']);
+            //插入操作
+            $data['bom_id']        = $bom_id;
+            $data['parent_id']     = 0;
+            $data['material_id']   = $row['material_id'];
+            $data['version']       = $row['version'];
+            $data['bom_material_id']   = $bom_material_id;
+            $data['loss_rate']     = $row['loss_rate'];
+            $data['is_assembly']   = $row['is_assembly'];
+            $data['usage_number']  = $row['usage_number'];
+            $data['comment']       = $row['comment'];
+            $data['total_consume'] = $row['total_consume'];
+            $insert_id = DB::table(config('alias.rbi') )->insertGetId($data);
+            if (!$insert_id) TEA('802');
+            //遍历阶梯数据
+
+            foreach ($row['bom_item_qty_levels']  as $rowQty){
+                $qtyData[$i]['bom_item_id'] = $insert_id;
+                $qtyData[$i]['parent_min_qty'] = $rowQty['parent_min_qty'];
+                $qtyData[$i]['qty'] = $rowQty['qty'];
+                $i++;
+            }
+            //遍历替换物料数据
+            foreach ($row['replaces'] as $rowReplace ){
+                //加入子类以及自身的物料id
+                $item_replace_material_ids = array_merge($item_replace_material_ids,$rowReplace['son_material_id']);
+                array_push($item_replace_material_ids,$rowReplace['material_id']);
+
+                //插入操作
+                $replaceData['bom_id']        = $bom_id;
+                $replaceData['bom_material_id']   = $bom_material_id;
+                $replaceData['parent_id']     = $insert_id;
+                $replaceData['material_id']   = $rowReplace['material_id'];
+                $replaceData['version']       = $rowReplace['version'];
+                $replaceData['loss_rate']     = $rowReplace['loss_rate'];
+                $replaceData['is_assembly']   = $rowReplace['is_assembly'];
+                $replaceData['usage_number']  = $rowReplace['usage_number'];
+                $replaceData['comment']       = $rowReplace['comment'];
+                $replaceData['total_consume'] = $rowReplace['total_consume'];
+                $replace_insert_id = DB::table(config('alias.rbi') )->insertGetId($replaceData);
+                if (!$replace_insert_id) TEA('802');
+                //遍历阶梯数据
+                foreach ($rowReplace['bom_item_qty_levels']  as $rowReplaceQty){
+                    $qtyData[$i]['bom_item_id']    = $replace_insert_id;
+                    $qtyData[$i]['parent_min_qty'] = $rowReplaceQty['parent_min_qty'];
+                    $qtyData[$i]['qty']            = $rowReplaceQty['qty'];
+                    $i++;
+                }
+            }
+        }
+        if(!empty($qtyData)) DB::table(config('alias.rbiql') )->insert($qtyData);
+
+        if(empty($item_material_ids) && empty($item_replace_material_ids)){
+            return false;
+        }else{
+            return array('item_material_path'=>empty(implode(',',$item_material_ids))?'':','.implode(',',$item_material_ids).',','replace_material_path'=>empty(implode(',',$item_replace_material_ids))?'':','.implode(',',$item_replace_material_ids).',');
+        }
+
+    }
+
+
+
+    /**
+     * 保存bom附件
+     * @param $input_attachments
+     * @param $material_id
+     * @throws ApiException
+     * @author sam.shan   <sam.shan@ruis-ims.cn>
+     */
+    public function saveBomAttachments($input_attachments,$bom_id,$creator_id)
+    {
+
+        //1.获取数据库中已经存在的附件
+        $db_ref_obj=DB::table(config('alias.rba'))->where('bom_id',$bom_id)->pluck('comment','attachment_id');
+        $db_ref_arr=obj2array($db_ref_obj);
+        $db_ids=array_keys($db_ref_arr);
+        //2.获取前端传递的附件
+        $input_ref_arr=$input_attachments;
+        $input_ids=array_keys($input_ref_arr);
+        //3.通过颠倒位置的差集获取改动情况,多字段要考虑编辑的情况额[有的人喜欢先删除所有然后变成全部添加,这种是错误的投机取巧行为,要杜绝!]
+        $set=get_array_diff_intersect($input_ids,$db_ids);
+        if(!empty($set['add_set']) || !empty($set['del_set']) || $set['common_set'])  $m=new BomAttachment();
+
+        //4.要添加的
+        if(!empty($set['add_set']))  $m->addSet($set['add_set'],$bom_id,$input_ref_arr,$creator_id);
+        //5.要删除
+        if(!empty($set['del_set']))  $m->delSet($set['del_set'],$bom_id,$db_ref_arr,$creator_id);
+        //6.可能要编辑的
+        if(!empty($set['common_set']))  $m->commonSet($set['common_set'],$bom_id,$db_ref_arr,$input_ref_arr,$creator_id);
+
+
+    }
+
+
+
+//endregion
+
+//region 改
+
+    public function update(&$input)
+    {
+
+        if($input['is_upgrade'] == 1){
+
+            $bom = DB::table($this->table)
+                ->where('material_id', $input['material_id'])
+                ->orderBy('version','DESC')
+                ->limit(1)
+                ->first();
+            $input['version']             = $bom->version+1;
+            $input['status']              = $bom->status;
+            $input['source_version']      = $bom->version;
+            $bom_new_id = $this->add($input);
+            return $bom_new_id;
+
+        }
+        $this->checkRules($input);
+        $bom_tree        = $input['bom_tree'];
+        $data = [
+            'code'=>$input['code'],//bom编码
+            'name'=>$input['name'],//名称
+            //'version'=>$input['version'],//版本
+            //'version_description'=>$input['version_description'],//版本介绍
+            'material_id'=>$input['material_id'],//物料id
+            'loss_rate'=>$input['loss_rate'],
+            'bom_group_id'=>$input['bom_group_id'],
+            'qty'=>$input['qty'],
+            'description'=>$input['description'],
+            'mtime'=>time(),//最后修改时间
+        ];
+        $this->checkFormFields($input);
+        $tmp = DB::table($this->table)
+            ->where('id', $input['bom_id'])
+            ->first();
+
+        $bom_really_tree = $this->getBomTree($input['material_id'],$tmp->version,true,true);
+        try {
+            //开启事务
+            DB::connection()->beginTransaction();
+            //1.物料清单基础资料更新
+            $this->updateBom($data,$input['bom_id']);
+            //2.更新子项内容
+            $this->checkBomItem($bom_tree,$bom_really_tree,$input['bom_id'],$input['material_id']);
+            //3.保存附件
+            $this->saveBomAttachments($input['input_ref_arr_attachments'],$input['bom_id'],$input['creator_id']);
+
+        } catch (\ApiException $e) {
+            //回滚
+            DB::connection()->rollBack();
+            TEA($e->getCode());
+        }
+        DB::connection()->commit();
+        return ;
+
+    }
+
+    /**
+     * 更新物料id路径
+     * @param $data
+     * @param $bom_id
+     */
+    public function updateBom($data,$bom_id)
+    {
+        $result = DB::table($this->table)
+            ->where('id', $bom_id)
+            ->update($data);
+        if($result===false) TEA('806');
+    }
+
+    /**
+     * 更新物料清单item
+     * @param $data
+     * @param $bom_item_id
+     */
+    public function updateBomItem($data,$bom_item_id)
+    {
+        $result = DB::table(config('alias.rbi'))
+            ->where('id', $bom_item_id)
+            ->update($data);
+        if($result===false) TEA('806');
+    }
+
+    /**
+     * 更新一条物料清单
+     * @param $data
+     * @param $bom_item_qty_id
+     */
+    public function updateBomQty($data,$bom_item_qty_id){
+        $result = DB::table(config('alias.rbiql'))
+            ->where('id', $bom_item_qty_id)
+            ->update($data);
+        if($result===false) TEA('806');
+    }
+
+
+    /**
+     * 检查比对树 并分配 操作
+     * @param $bom_tree
+     * @param $bom_id
+     * @param $bom_material_id
+     */
+    public function checkBomItem($bom_tree,$bom_really_tree,$bom_id,$bom_material_id)
+    {
+        $replace      = array();
+        $qty          = array();
+        $add_material_ids = array();
+        $delete_material_ids = array();
+        $update_master_material_ids = array();
+
+        $add_replace_ids = array();
+        $delete_replace_ids = array();
+        $update_replace_ids = array();
+
+        $add_qty_ids = array();
+        $delete_qty_ids = array();
+        $update_qty_ids = array();
+
+        $deal = $this->formatArray($bom_tree);
+
+        $real = $this->formatArray(obj2array($bom_really_tree->children));
+        //最上层比对 判断 增删改 key为物料id key新增 证明该项是新增。没有 就为删除
+        $master = $this->judgeMaterial($deal['materials'],$real['materials']);
+        //下层判断，规则同上 ，判断替换物料
+        //dd($deal,$real);
+        //master中update里面的都是原先存在的根据的是物料ID 所有这些 需要往下进行判断
+        foreach ($master['update']  as $key=>$value){
+            $replace_deal = $deal['materials_replace'][$key];
+            $replace_real = $real['materials_replace'][$key];
+            $replace[$key] = $this->judgeMaterial($replace_deal,$replace_real,0);
+
+        }
+
+        //下层判断，规则同上 ，判断阶梯用量
+        foreach ($master['update'] as $key => $value){
+            $qty_deal  = $deal['qty'][$key];
+            $qty_real  = $real['qty'][$key];
+            $qty[$key] = $this->judgeMaterial($qty_deal,$qty_real,0,1);
+        }
+
+        //替换的下层
+        foreach ($replace as $key=>$value){
+            foreach ($value['updateMaster'] as  $k=>$v){
+                $qty_deal  = $deal['qty'][$k];
+                $qty_real  = $real['qty'][$k];
+                $qty[$k] = $this->judgeMaterial($qty_deal,$qty_real,0,1);
+            }
+        }
+
+        //dd($master,$replace,$qty);
+        //解析获得的数组并且操作数据库
+
+        //添加的
+        foreach ($master['add'] as $key => $value){
+            $add_material_ids[]     = $key;
+        }
+        //删除的物料
+        foreach ($master['delete'] as $key=>$value){
+            $delete_material_ids[]  = $key;
+        }
+        //第一层更新
+        foreach ($master['updateMaster'] as $key=>$value){
+            $update_master_material_ids[]  = $key;
+        }
+        //第二层 物料
+        foreach ($replace as $key=>$value){
+            foreach ($value['add'] as $k=>$v){
+                $add_replace_ids[$key][] = $k;
+            }
+            foreach ($value['delete'] as $k=>$v){
+                $delete_replace_ids[$key][] = $k;
+            }
+            foreach ($value['update'] as $k=>$v){
+                $update_replace_ids[$key][] = $k;
+            }
+        }
+
+        //第二层 阶梯用量
+        foreach ($qty as $key=>$value){
+            foreach ($value['add'] as $k=>$v){
+                $add_qty_ids[$key][] = $k;
+            }
+            foreach ($value['delete'] as $k=>$v){
+                $delete_qty_ids[$key][] = $k;
+            }
+            foreach ($value['update'] as $k=>$v){
+                $update_qty_ids[$key][] = $k;
+            }
+        }
+
+        //在原树中寻找删除数据
+        foreach (obj2array($bom_really_tree->children) as $row){
+
+            if(!empty($delete_material_ids) && in_array($row['material_id'],$delete_material_ids)){
+                $delete[] = $row;
+            }
+
+            foreach ($row['bom_item_qty_levels']  as $value){
+                if(!empty($delete_qty_ids[$row['material_id']]) && in_array($value['bom_item_qty_level_id'],$delete_qty_ids[$row['material_id']])){
+                    $delete_qty[] = $value;
+                }
+            }
+
+            foreach ($row['replaces'] as $value){
+                if(!empty($delete_replace_ids[$row['material_id']]) && in_array($value['material_id'],$delete_replace_ids[$row['material_id']])){
+                    $delete_replace[] = $value;
+                }
+                foreach ($value['bom_item_qty_levels']  as $v){
+
+                    if(!empty($delete_qty_ids[$value['material_id']]) && in_array($v['bom_item_qty_level_id'],$delete_qty_ids[$value['material_id']])){
+                        $delete_qty[] = $v;
+                    }
+                }
+            }
+
+        }
+        $item_material_ids = array();
+        $item_replace_material_ids = array();
+        //到修改树中寻找 更新 添加的数据 并且获得 全新的树结构
+        foreach ($bom_tree as $row){
+            //收集树
+            $item_material_ids = array_merge($item_material_ids,$row['son_material_id']);
+            array_push($item_material_ids,$row['material_id']);
+
+            if(!empty($add_material_ids) && in_array($row['material_id'],$add_material_ids)){
+                $add[] = $row;
+            }
+            if(!empty($update_master_material_ids) && in_array($row['material_id'],$update_master_material_ids)){
+                $update[] = $row;
+            }
+            foreach ($row['bom_item_qty_levels']  as $value){
+                if(!empty($add_qty_ids[$row['material_id']]) && in_array($value['bom_item_qty_level_id'],$add_qty_ids[$row['material_id']])){
+                    $add_qty[]    = $value;
+                }
+                if(!empty($update_qty_ids[$row['material_id']]) && in_array($value['bom_item_qty_level_id'],$update_qty_ids[$row['material_id']])){
+                    $update_qty[] = $value;
+                }
+
+            }
+            foreach ($row['replaces'] as $value){
+                $item_replace_material_ids = array_merge($item_replace_material_ids,$value['son_material_id']);
+                array_push($item_replace_material_ids,$value['material_id']);
+                if(!empty($add_replace_ids[$row['material_id']]) && in_array($value['material_id'],$add_replace_ids[$row['material_id']])){
+                    $value['parent_id'] = $row['bom_item_id'];
+                    $add_replace[]    = $value;
+                }
+                if(!empty($update_replace_ids[$row['material_id']]) && in_array($value['material_id'],$update_replace_ids[$row['material_id']])){
+                    $value['parent_id'] = $row['bom_item_id'];
+                    $update_replace[] = $value;
+                }
+
+                foreach ($value['bom_item_qty_levels']  as $v){
+                    if(!empty($add_qty_ids[$value['material_id']]) && in_array($v['bom_item_qty_level_id'],$add_qty_ids[$value['material_id']])){
+                        $add_qty[]    = $v;
+                    }
+                    if(!empty($update_qty_ids[$value['material_id']]) && in_array($v['bom_item_qty_level_id'],$update_qty_ids[$value['material_id']])){
+                        $update_qty[] = $v;
+                    }
+
+                }
+            }
+        }
+
+        //dd($add_replace);
+
+        if (!empty($add)){
+            $result = $this->addBomItem($add,$bom_id,$bom_material_id);
+            if(is_array($result)) $this->updateBom($result,$bom_id);
+        }
+        if(!empty($delete)){
+            $this->deleteBomItem($delete);
+        }
+
+        //更新 确定更新位置
+        //第一层
+        if(!empty($update)){
+            //TODO 确定具体修改的内容
+
+            foreach ($update as $row){
+                $update_data = [
+                    'material_id'=>$row['material_id'],//bom编码
+                    'loss_rate'=>$row['loss_rate'],//名称
+                    'is_assembly'=>$row['is_assembly'],//版本
+                    'usage_number'=>$row['usage_number'],//版本介绍
+                    'comment'=>$row['comment'],
+                    'version'=>$row['version'],
+                    'total_consume'=>$row['total_consume'],
+                    'bom_material_id'=>$row['bom_material_id'],
+                    'bom_id'=>$row['bom_id'],
+                ];
+                $this->updateBomItem($update_data,$row['bom_item_id']);
+            }
+
+        }
+        //第二层 替换物料增加
+        if(!empty($add_replace)){
+            $i = 0;
+            foreach ($add_replace as $row){
+                $add_replace_data = [
+                    'material_id'=>$row['material_id'],//bom编码
+                    'loss_rate'=>$row['loss_rate'],//名称
+                    'is_assembly'=>$row['is_assembly'],//版本
+                    'usage_number'=>$row['usage_number'],//版本介绍
+                    'comment'=>$row['comment'],
+                    'version'=>$row['version'],
+                    'total_consume'=>$row['total_consume'],
+                    'parent_id'=>$row['parent_id'],
+                    'bom_material_id'=>$row['bom_material_id'],
+                    'bom_id'=>$row['bom_id'],
+                ];
+                $tmp_insert_id = DB::table(config('alias.rbi') )->insertGetId($add_replace_data);
+                foreach ($row['bom_item_qty_levels'] as $qty_row){
+                    $qty_data[$i]['parent_min_qty'] = $qty_row['parent_min_qty'];
+                    $qty_data[$i]['qty'] = $qty_row['qty'];
+                    $qty_data[$i]['bom_item_id'] = $tmp_insert_id;
+                    $i++;
+                }
+            }
+            if(!empty($qty_data)) DB::table(config('alias.rbiql') )->insert($qty_data);
+
+        }
+        if(!empty($delete_replace)){
+            $this->deleteBomReplace($delete_replace);
+        }
+        if(!empty($update_replace)){
+            foreach ($update_replace as $row){
+                $update_replace_data = [
+                    'material_id'=>$row['material_id'],//bom编码
+                    'loss_rate'=>$row['loss_rate'],//名称
+                    'is_assembly'=>$row['is_assembly'],//版本
+                    'usage_number'=>$row['usage_number'],//版本介绍
+                    'comment'=>$row['comment'],
+                    'version'=>$row['version'],
+                    'total_consume'=>$row['total_consume'],
+                    'parent_id'=>$row['parent_id'],
+                    'bom_material_id'=>$row['bom_material_id'],
+                    'bom_id'=>$row['bom_id'],
+                ];
+                $this->updateBomItem($update_replace_data,$row['bom_item_id']);
+            }
+        }
+        //第二层 阶梯用量 以及 替换物料的阶梯用量 使用
+        if(!empty($add_qty)){
+            foreach ($add_qty as $row){
+                $add_qty_data[] = [
+                    'bom_item_id'=>$row['bom_item_id'],//bom编码
+                    'parent_min_qty'=>$row['parent_min_qty'],//名称
+                    'qty'=>$row['qty'],//版本
+
+                ];
+            }
+            DB::table(config('alias.rbiql') )->insert($add_qty_data);
+        }
+        if(!empty($delete_qty)){
+            $this->deleteBomQty($delete_qty);
+        }
+        if(!empty($update_qty)){
+            foreach ($update_qty as $row){
+                $update_qty_data = [
+                    'bom_item_id'=>$row['bom_item_id'],//bom编码
+                    'parent_min_qty'=>$row['parent_min_qty'],//名称
+                    'qty'=>$row['qty'],//版本
+                ];
+                $this->updateBomQty($update_qty_data,$row['bom_item_qty_level_id']);
+            }
+        }
+        //TODO 缓存redis
+        $update_route = array('item_material_path'=>empty(implode(',',$item_material_ids))?'':','.implode(',',$item_material_ids).',','replace_material_path'=>empty(implode(',',$item_replace_material_ids))?'':','.implode(',',$item_replace_material_ids).',');
+        $this->updateBom($update_route,$bom_id);
+    }
+
+    /**
+     * 修改状态
+     * @param $input
+     */
+    public function changeStatus($input)
+    {
+        $this->checkRules($input);
+        if($input['status'] !='0' && $input['status'] !='1'){
+            TEA('2108');
+        }
+        switch ($input['type']){
+            case "active":
+                $this->active($input['bom_id'],$input['status']);
+                break;
+            case "release":
+                $this->release($input['bom_id'],$input['status']);
+                break;
+            default:
+                TEA('2109');
+                break;
+        }
+    }
+
+    public function active($bom_id,$status)
+    {
+        $bom = DB::table(config('alias.rb') )->where('id',"=",$bom_id)->first();
+        $result = DB::table(config('alias.rb'))
+            ->where('material_id', $bom->material_id)
+            ->update(array('status'=>$status));
+        if($result===false) TEA('806');
+
+    }
+
+    public function release($bom_id,$status)
+    {
+        try {
+            //开启事务
+            DB::connection()->beginTransaction();
+            $bom = DB::table(config('alias.rb') )->where('id',"=",$bom_id)->first();
+            //将所有版本的状态改为未发布
+            $result = DB::table(config('alias.rb'))
+                ->where('material_id', $bom->material_id)
+                ->update(array('is_version_on'=>0));
+            if($result===false) TEA('806');
+
+            //将当前版本改为发布
+            $result = DB::table(config('alias.rb'))
+                ->where('id', $bom_id)
+                ->update(array('is_version_on'=>$status));
+            if($result===false) TEA('806');
+
+            //将所有被用到的更新版本
+            $count = DB::table(config('alias.rbi'))
+                ->where('material_id',$bom->material_id)
+                ->count();
+            if($count >0){
+                $result = DB::table(config('alias.rbi'))
+                    ->where('material_id',$bom->material_id)
+                    ->update(array('version'=>$bom->version));
+                if($result===false) TEA('806');
+            }
+
+
+
+        } catch (\ApiException $e) {
+            //回滚
+            DB::connection()->rollBack();
+            TEA($e->getCode());
+        }
+        DB::connection()->commit();
+        return ;
+
+    }
+//endregion
+
+//region 删
+    /**
+     * 整体树的删除
+     * @param $tree
+     */
+    public function deleteBomItem($tree)
+    {
+        foreach ($tree as $row){
+            $replaceIds  =  array();
+            $qtyIds      =  array();
+            DB::table(config('alias.rbi') )->where('id',"=",$row['bom_item_id'])->delete();
+            foreach ($row['replaces'] as $replaceRow){
+                $replaceIds[] = $replaceRow['bom_item_id'];
+            }
+            foreach ($row['bom_item_qty_levels'] as $qtyRow){
+                $qtyIds[] = $qtyRow['bom_item_qty_level_id'];
+            }
+            if(!empty($replaceIds)){
+                DB::table(config('alias.rbi') )->whereIn('id', $replaceIds)->delete();
+            }
+            if(!empty($qtyIds)){
+                DB::table(config('alias.rbiql') )->whereIn('id', $qtyIds)->delete();
+            }
+        }
+    }
+
+    /**
+     * 删除具体的替换物料
+     * @param $data
+     */
+    public function deleteBomReplace($data)
+    {
+        foreach ($data as $row){
+            DB::table(config('alias.rbi') )->where('id',"=",$row['bom_item_id'])->delete();
+            foreach ($row['bom_item_qty_levels'] as $qtyRow){
+                $qtyIds[] = $qtyRow['bom_item_qty_level_id'];
+            }
+            if(!empty($qtyIds)){
+                DB::table(config('alias.rbiql') )->whereIn('id', $qtyIds)->delete();
+            }
+        }
+    }
+
+    /**
+     * 删除具体的阶梯用量
+     * @param $data
+     */
+    public function deleteBomQty($data)
+    {
+        foreach ($data as $qtyRow){
+            $qtyIds[] = $qtyRow['bom_item_qty_level_id'];
+        }
+        if(!empty($qtyIds)){
+            DB::table(config('alias.rbiql') )->whereIn('id', $qtyIds)->delete();
+        }
+    }
+
+    /**
+     * bom删除
+     * @param $id
+     */
+    public function destroy($id)
+    {
+        $bom = DB::table(config('alias.rb') )->where('id',"=",$id)->first();
+        $material_id = $bom->material_id;
+        $num = DB::table(config('alias.rb') )->where('material_id',"=",$material_id)->count();
+        if($num >1){
+            TEA('2107');
+        }
+        $has = DB::table(config('alias.rbi') )->where('material_id',"=",$material_id)->first();
+        if(!empty($has)){
+            TEA('2106');
+        }
+        try {
+            DB::connection()->beginTransaction();
+            $items  = array();
+            //删除bom
+            DB::table(config('alias.rb') )->where('id',"=",$id)->delete();
+            //找出bom_item
+            $bom_items = DB::table(config('alias.rbi') )->where('bom_id',"=",$bom->id)->get();
+            //删除bom_item
+            DB::table(config('alias.rbi') )->where('bom_id',"=",$bom->id)->delete();
+            //删除阶梯用量
+            foreach ($bom_items as $bom_item){
+                $items[] = $bom_item->id;
+            }
+            if(!empty($items)){
+                DB::table(config('alias.rbiql') )->whereIN('bom_item_id',$items)->delete();
+            }
+
+
+        } catch (\ApiException $e) {
+            //回滚
+            DB::connection()->rollBack();
+            TEA($e->getCode());
+        }
+        DB::connection()->commit();
+
+
+    }
+//endregion
+
+//region 额外
+
+    /**
+     * 整理数据格式
+     * @param $data
+     * @return array
+     */
+    public function formatArray($data)
+    {
+        $qty             = array();
+        $materialReplace = array();
+        $sample = new BomIterator($data);
+        foreach ($sample as $key=>$value ){
+            $sample2 = new BomIterator($value['replaces']);
+            $qty[$value['material_id']] = $value['bom_item_qty_levels'];
+            foreach ($sample2 as $k=>$v){
+                $qty[$v['material_id']] = $v['bom_item_qty_levels'];
+            }
+            $materialReplace[$value['material_id']]=$sample2->_materials;
+        }
+        $materials = $sample->_materials;
+        return array('materials'=>$materials,'qty'=>$qty,'materials_replace'=>$materialReplace);
+    }
+
+    /**
+     * 判断整理出 增 删 改
+     * @param $deal
+     * @param $real
+     * @param $is_first
+     * @param $is_qty
+     * @return array
+     */
+    public function judgeMaterial($deal , $real ,$is_first = 1, $is_qty = 0 )
+    {
+        $updateMaster = array();
+        $add    = array_diff_key($deal,$real);
+        $delete = array_diff_key($real,$deal);
+        //计算交集 交集的value值变了 就为修改。修改最后最详细定位。因为上层不能判断 ，所以全部列入更新数组。最后由子项决定
+        if($is_first){
+            $update = array_intersect_key($deal,$real);
+            foreach ($update as $key=>$value){
+                if($real[$key]  != $deal[$key]){
+                    $updateMaster[$key] = $value;
+                }
+            }
+        }else{
+            $update = array();
+            $tmp = array_intersect_key($deal,$real);
+            $updateMaster = $tmp;
+            foreach ($tmp as $key=>$value){
+                if($real[$key]  != $deal[$key]){
+                    $update[$key] = $value;
+                }
+            }
+        }
+        //阶梯用量是多维数组 需要额外加一次 循环
+        if($is_qty){
+            $same = array_intersect($deal,$real);
+            foreach ($add as $k=>$v){
+                if(in_array($v,$same)){
+                    unset($add[$k]);
+                }
+            }
+            foreach ($delete as $k=>$v){
+                if(in_array($v,$same)){
+                    unset($delete[$k]);
+                }
+            }
+        }
+        return array('add'=>$add,'delete'=>$delete,'update'=>$update,'updateMaster'=>$updateMaster);
+    }
+
+
+//endregion
+
+
+
+}

@@ -1,0 +1,40 @@
+#addMAttr_from .modal-wrap{
+    max-height: 490px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+#addMAttr_from .errorMessage{
+    display: block;
+}
+#addMAttr_from .el-form-item .el-form-item-label{
+    flex: none;
+}
+.dataTypeWrap .checkboxwrap{
+    width: 95px;
+    -webkit-box-flex: 0;
+    -webkit-flex: none;
+       -moz-box-flex: 0;
+        -ms-flex: none;
+            flex: none;
+}
+.select-item{
+    margin-left: 14px;
+}
+#addMAttr_from .el-item-wrap{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+#addMAttr_from .el-item-wrap .el-form-item-label{
+    margin-left: 0;
+    padding: 11px 0;
+    min-width: 63px;
+}
+.el-button.item-add,.el-button.item-btn-add{
+    margin-left: 10px;
+    background: #96d496;
+    color: #fff;
+    border: 0;
+}

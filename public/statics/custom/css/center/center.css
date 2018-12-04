@@ -1,0 +1,29 @@
+.file-drop-zone.clickable:hover{
+	border: 1px dashed #000;
+}
+#editPerson_from .el-flex-wrap{
+	display: flex;
+}
+.formTemplate .el-form-item{
+	display: block;
+	margin-bottom: 0;
+}
+.formTemplate .el-form-item .el-form-item-label{
+	flex: none;
+	width: 80px;
+}
+.formTemplate .el-form-item .errorMessage{
+	display: block;
+}
+.btn.btn-file-input{
+	display: none;
+}
+.file-preview{
+	border: 0;
+}
+img.imginit{
+	width: auto;
+	height: auto;
+	max-width: 100%;
+	max-height: 100%;
+}

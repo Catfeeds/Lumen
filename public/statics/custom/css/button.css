@@ -1,0 +1,81 @@
+input.button, button,a.button {
+    padding: 0 4px;
+    margin-left: 4px;
+    height: 24px;
+    line-height: 24px;
+    width: auto;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none!important;
+    font-size: 12px;
+    font-weight: normal;
+    vertical-align: middle;
+}
+input.button_action,a.button_action,button.button_action{
+    background-color: rgba(163, 186, 205, 0);
+    font-family: "OpenSans", "Helvetica New", Arial;
+    border: 1px solid #607d8b;
+    -webkit-border-radius: 4px;
+            border-radius: 4px;
+    color: #607d8b;
+    text-transform: uppercase;
+    vertical-align: middle;
+    padding-left: 22px!important;
+}
+input.button_search, a.button_search, button.button_search {   
+    background-image: url(/images/buttons/search.png);
+    background-repeat: no-repeat;
+    background-position: 4px center;
+    _background-image: url(/images/buttons/search.gif);
+}
+input.button_add, a.button_add, button.button_add {
+    background-image: url(/images/buttons/add.png);
+    background-repeat: no-repeat;
+    background-position: 4px center;
+    _background-image: url(/images/buttons/add.gif);
+}
+a.button.link-button{
+    border: 1px solid #3f8aca;
+    color: #3f8aca;
+    -webkit-border-radius: 3px;
+            border-radius: 3px;
+    padding: 4px 8px;
+    height: 16px;
+    line-height: 16px;
+}
+a.button.link-button:hover{
+    background-color: #daeeff;
+    text-decoration: none;
+
+}
+.bom-button{
+    background-color: #00a0e9;
+    border-radius: 4px;
+    border:none;
+    color: #fff;
+    padding:0 6px;
+}
+.bom-del{
+    background-color: #f5480e;
+}
+.bom-del:hover,.bom-info-del:hover{
+    color:#ccc;
+}
+.bom-button:focus{
+    outline:none;
+}
+.bom-info-button{
+    background-color: #fff;
+    border:solid 1px #00a0e9;
+    color: #00a0e9;
+    padding:0 6px;
+    border-radius: 4px;
+}
+.bom-info-del{
+    border: solid 1px #f5480e;
+    color: #f5480e;
+}
+.bom-info-del:hover{
+    border: solid 1px #cd430e;
+    color: #cd430e;
+}

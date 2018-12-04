@@ -1,0 +1,313 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+body {
+    font-size: 12px;
+    color: #666;
+}
+.GanttWrap{
+    position: relative;
+    /* width: 1200px;
+    height: 650px; */
+}
+.GanttWrap .GanttHeadWrap{
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: -moz-box;
+    display: flex;
+    width: 100%;
+    height: 60px;
+    z-index: 9999;
+    overflow-x: hidden;
+}
+.GanttHeadWrap .GanttTaskDiv{
+    height: 60px;
+}
+.GanttTaskWrap table {
+    empty-cells: show;
+    border-collapse: collapse;
+    border: none;
+    text-align: center;
+}
+.GanttTaskWrap{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: -moz-box;
+    display: flex;
+    width: 100%;
+    height:505px;;
+    overflow-y: auto;
+    overflow-x:hidden;
+    position: relative;
+/*    -webkit-box-flex:1;
+    -webkit-flex:auto;
+        -ms-flex:auto;
+            flex:auto;*/
+}
+
+.GanttTitleDiv{
+    -webkit-box-flex:0;
+    -webkit-flex:none;
+        -ms-flex:none;
+            -moz-box-flex:0;
+         flex:none;
+    width: 60px;
+    position: relative;
+}
+.GanttTaskDiv {
+    -webkit-box-flex:1;
+    -webkit-flex:auto;
+        -ms-flex:auto;
+            -moz-box-flex:1;
+         flex:auto;
+    overflow-x: hidden;;
+    overflow-y: hidden;
+    position: relative;
+    -webkit-align-self: flex-start;
+        -ms-flex-item-align: start;
+            align-self: flex-start;
+}
+.GanttFixed{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    table-layout: fixed;
+}
+
+.scrollDiv{
+    position: fixed;
+    left: 60px;
+    top: 0px;
+    height: 4px;
+    background: #ccc;
+    display: none;
+}
+.scrollDiv >div{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.scrollBar{
+    position: absolute;
+    left: 0;
+    top:-4px;
+    width:20px;
+    height: 10px;
+    -webkit-border-radius: 4px;
+            border-radius: 4px;
+    background: #ccc;
+    cursor: pointer;
+}
+
+
+table.GanttTitle{
+    width: 100%;
+}
+
+table.GanttTask {
+    table-layout: fixed;
+     position: relative;;
+     left: 0;
+     top: 0;
+     border-right: 1px solid #ddd;
+     /*padding-right: 20px;*/
+}
+
+table.GanttTitle th,table.GanttTitleFixed th{
+    height: 57px;
+    border: 1px #ddd solid;
+    padding: 0;
+    background: #fff;
+    -webkit-box-sizing: content-box;
+       -moz-box-sizing: content-box;
+            box-sizing: content-box;
+}
+.out {  
+    height: 57px;
+    background: -webkit-linear-gradient(45deg, transparent 49.5%, #ccc 49.5%, #ccc 50.5%, transparent 50.5%);
+    background: -o-linear-gradient(45deg, transparent 49.5%, #ccc 49.5%, #ccc 50.5%, transparent 50.5%);
+    background: linear-gradient(45deg, transparent 49.5%, #ccc 49.5%, #ccc 50.5%, transparent 50.5%);
+    position: relative; /*让里面的两个子容器绝对定位*/  
+} 
+.out b {  
+    font-style: normal;  
+    display: block;  
+    position: absolute;  
+    top: 8px;  
+    left: 13px;  
+    width: 60px;  
+} 
+.out em {  
+    font-style: normal;  
+    display: block;  
+    position: absolute;  
+    top: 34px;  
+    left: -10px;  
+    width: 60px;  
+}   
+table.GanttTitle td{
+    height: 30px;
+    border: 1px #ddd solid;
+    -webkit-box-sizing: content-box;
+       -moz-box-sizing: content-box;
+            box-sizing: content-box;
+}
+table.GanttTask th,table.GanttTaskFixed th {
+    height: 28px;
+    border: 1px #ddd solid;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+       text-overflow: ellipsis;
+    padding: 0;
+    background: #fff;
+    text-align: center;
+    -webkit-box-sizing: content-box;
+       -moz-box-sizing: content-box;
+            box-sizing: content-box;
+}
+table.GanttTask .days th {
+    /*width: 80px;*/
+}
+table.GanttTask td{
+    width: 40px;
+    height: 20px;
+    padding-top:15px;
+    border: 1px #ddd solid;
+    -webkit-box-sizing: content-box;
+       -moz-box-sizing: content-box;
+            box-sizing: content-box;
+}
+table.GanttTask th:first-child,table.GanttTask td:first-child{
+    border-left: none;
+}
+table.GanttTask td div.pro{
+    height: 8px;
+    background: #eee;
+    /*border: 1px solid #ddd;*/
+    margin: 5px 0;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: -moz-box;
+    display: flex;
+    cursor:default;
+}
+table.GanttTask td .Tname{
+    position: absolute;
+    left: 0px;
+    top:4px;
+    /*max-width: 120px;*/
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+       text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 2px;
+    -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+         box-sizing: border-box;
+    text-align: right;
+    /*color:#fff;*/
+}
+table.GanttTask td .Tname i{
+    font-style: normal;
+}
+table.GanttTask td .detail{
+    position: fixed;
+    width: 150px;
+    min-height: 60px;
+    left: 0px;
+    top: 0px;
+    background: #fff;
+    -webkit-border-radius: 6px;
+            border-radius: 6px;
+    border: 1px solid #7eafff;
+    display: none;
+    z-index: 2;
+    text-align: left;
+    padding: 10px;
+    -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+         box-sizing: border-box;
+}
+
+table.GanttTask td .detail p{
+    margin: 0 0 5px;
+    line-height: 14px;
+    font-size: 12px;
+}
+table.GanttTask td .detail p label{
+    font-size: 12px;
+}
+
+table.GanttTask td .detail p span{
+
+}
+/*table.GanttTask td:hover .detail{
+    display: block
+}*/
+table.GanttTask td .pro .finished{
+    height: 8px;
+    -webkit-box-flex:0;
+    -webkit-flex:none;
+        -ms-flex:none;
+            -moz-box-flex:0;
+         flex:none;
+    background:#83af21;
+}
+table.GanttTask td .pro .needFinish{
+    height: 8px;
+    -webkit-box-flex:0;
+    -webkit-flex:none;
+        -ms-flex:none;
+            -moz-box-flex:0;
+         flex:none;
+    background:#F0830F;
+}
+
+table.GanttTask .days th.active{
+    position: relative;
+    background: #f1d1d1;
+    color: red;
+}
+table.GanttTask .days th.active i{
+    position: absolute;
+    content: "";
+    right: -2px;
+    top:0;
+    height: 100px;
+    width: 1px;
+    border-left: 1px solid red;
+    z-index: 1;
+}
+.op-panel{
+    position: fixed;
+    z-index: 9999;
+    background: #fff;
+    top: 50%;
+    left: 78px;
+    -webkit-border-radius: 10px;
+            border-radius: 10px;
+    -webkit-box-shadow: 1px 1px 10px #bbb;
+            box-shadow: 1px 1px 10px #bbb;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+    display: none;
+}
+.op-panel .other-info{
+    padding-top: 20px;
+    padding-right: 15px;
+    text-align: left;
+}

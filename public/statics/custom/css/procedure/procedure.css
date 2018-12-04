@@ -1,0 +1,221 @@
+
+.addProcedureModal .errorMessage,.work-hour-view .errorMessage,.addAbility .errorMessage{
+    display: block;
+}
+
+.operation-info-button {
+    background-color: #fff;
+    border: solid 1px #00a0e9;
+    color: #00a0e9;
+    padding: 4px 6px;
+    border-radius: 4px;
+}
+.operation-info-button:hover {
+    border-color: #156ba8;
+    color: #156ba8;
+}
+
+.add_hours_wrap{
+    margin-left:30px;
+    min-height: 200px;
+    /*border: solid 1px red;*/
+}
+
+.add_hours_wrap .hours_content{
+    border:solid 1px #d5d5d5;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.hours_list_container{
+    display: block;
+    border-bottom: solid 1px #d5d5d5;
+    padding:10px 0;
+}
+
+.hours_list_container>div{
+    float: left;
+}
+.hours_list_container .hours_procedure,.hours_list_container .hours_ability{
+    height: 35px;
+    line-height: 35px;
+    margin-right: 30px;
+}
+.tags.selectValue {
+    padding: 5px;
+    min-height: 36px;
+    line-height: 22px;
+    border-color:#bfcbd9!important;
+    width: 100%;
+}
+
+.procedure_wrap{
+    display:flex;
+    margin-bottom: 10px;
+}
+.procedure_wrap .procedure_select,.procedure_wrap .procedure_ability_value{
+    flex:1;
+    border:solid 1px #d1dbe5;
+    box-sizing: border-box;
+}
+.procedure_wrap .procedure_btn{
+    display: flex;
+    align-items: center;
+}
+.procedure_wrap .title{
+    border-bottom: solid 1px #d1dbe5;
+    margin-bottom: 5px;
+    padding-left: 10px;
+}
+.procedure_wrap .procedure_btn span{
+    padding: 6px 10px;
+    border: solid 1px #d1dbe5;
+    margin: 10px;
+    border-radius: 4px;
+    color: #d1dbe5;
+    font-size: 14px;
+    font-weight: bold
+}
+.procedure_ability_value .el-input{
+    width:150px;
+}
+.procedure_ability_value .ability_selected{
+    background-color: #20a0ff1a;
+}
+
+.selectOperationAbility_table,.inputOperationValue_table{
+    height: 380px;
+    overflow: auto;
+}
+.selectOperationAbility_table .info_table a{
+    color: #20a0ff;
+}
+.selectOperationAbility_table .info_table a:hover{
+    color: #1a77c3;
+     text-decoration: underline;
+ }
+table.info_table thead th {
+    /*border-bottom: solid 1px #d5d5d5;*/
+    /*background-color: #eee;*/
+    text-align: center;
+    font-size: 12px;
+}
+table.info_table tbody td {
+    position: relative;
+}
+table.info_table tbody td {
+    text-align: center;
+    /*border-bottom: solid 1px #d5d5d5;*/
+    line-height: 40px;
+}
+
+/*changge by guangyang.wang*/
+/*搜索条件样式*/
+#indexSearchForm.hide + .table_page{
+    margin-top: 20px;
+}
+#indexSearchForm .formModal{
+    padding: 0;
+}
+#indexSearchForm .el-form-item{
+    margin-bottom: 12px;
+    width: 50%;
+    padding-right: 15px;
+    -webkit-box-flex: 0;
+    -webkit-flex: none;
+    -moz-box-flex: 0;
+    -ms-flex: none;
+    flex: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+#indexSearchForm .el-form-item-label{
+    width: 100px;
+    -webkit-box-flex: 0;
+    -webkit-flex: none;
+    -moz-box-flex: 0;
+    -ms-flex: none;
+    flex: none;
+    font-size: 12px;
+}
+#indexSearchForm .el-item{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+#indexSearchForm .el-item-align{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+#indexSearchForm .el-item>div:first-child{
+    width: 800px;
+    -webkit-box-flex: 0;
+    -webkit-flex: none;
+    -moz-box-flex: 0;
+    -ms-flex: none;
+    flex: none;
+    position: relative;
+    margin-top: 5px;
+    padding: 5px 0;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+#indexSearchForm .el-item>div:last-child{
+    -webkit-box-flex: 1;
+    -webkit-flex: auto;
+    -moz-box-flex: 1;
+    -ms-flex: auto;
+    flex: auto;
+}
+#indexSearchForm .el-item .el-form-item-div.btn-group{
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+    -moz-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+}
+#indexSearchForm .el-item-hide{
+    margin-left: 0;
+    width: 100%;
+    position: absolute;
+    background-color: #e2eff7;
+    z-index: 999;
+    display: none;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+#indexSearchForm .el-item-hide li{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-left: 0;
+}
+#indexSearchForm .el-form-item .el-button{
+    padding: 8px 15px;
+}
+#indexSearchForm .el-select-dropdown{
+    position: absolute;
+}
+#indexSearchForm .arrow{
+    display: inline-block;
+    height: 36px;
+    line-height: 36px;
+    cursor: pointer;
+    font-size: 20px;
+}
+#indexSearchForm .arrow .el-input-icon{
+    position: relative;
+    font-size: 22px;
+    color: #333;
+}
+.word_wrap{
+    max-width: 300px;
+}

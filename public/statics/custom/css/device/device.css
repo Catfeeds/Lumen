@@ -1,0 +1,6 @@
+.company_flag{
+    color: #999!important;
+}
+.company_flag:hover{
+    background-color: transparent!important;
+}

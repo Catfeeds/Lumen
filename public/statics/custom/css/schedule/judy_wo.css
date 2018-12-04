@@ -1,0 +1,112 @@
+.thinProduction_wrap{
+    display: flex;
+    min-height: 400px;
+    border:solid 1px #d1dbe5;
+}
+.thinProduction_wrap .thinCalendar{
+    flex:4;
+}
+.thinProduction_wrap .thinWorkOrder{
+    flex:1;
+    border-left:solid 1px #d1dbe5;
+    background-color: #f9f9f9;
+}
+.thinWorkOrder h5{
+    padding-left: 10px;
+    color: #ff880d;
+    font-weight: bold;
+}
+.thinWorkOrder .thinWorkOrderList{
+    padding-left:20px;
+}
+.thin_order_block .order_title{
+    color: #bdbdbd;
+}
+.thin_order_block .order_list ul li{
+    height: 26px;
+    line-height: 26px;
+    cursor: pointer;
+    color: #00a0e9;
+}
+.thin_order_block .order_list ul li:hover{
+    text-decoration: underline;
+    color: #008bcc;
+}
+.thin_order_block .order_list ul li.is-disabled{
+    color: #666;
+    text-decoration: none;
+}
+.work_order_info .info_wrap{
+    display: flex;
+}
+.addThinProduction .el-form-item span{
+    position: relative;
+    top: -2px;
+}
+.work_order_condition{
+    margin-bottom: 10px;
+}
+.work_order_info .title,.work_order_condition .title{
+    padding-left: 15px;
+}
+.thinCalendar .el-item-align .el-form-item{
+    width:auto!important;
+    padding-right: 0px!important;
+}
+.factory_tree .el-select-dropdown-item.factory_item_tree:hover{
+    background-color: transparent!important;
+}
+.factory_tree .el-select-dropdown-item.factory_item_tree{
+    color: #999 !important;
+}
+.gantt-div-wrap{
+    position: relative;
+    width: calc(100% - 20px);
+}
+.gantt-div-wrap .GanttWrap{
+    width: 1000px;
+    height: 650px;
+}
+.gantt-div-wrap .scrollDiv{
+    position: absolute;
+    top: auto;
+    bottom: 5px;
+}
+.out b{
+    left: 28px;
+}
+.out em{
+    left: 4px;
+}
+table.GanttTask td div.abdiv{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+table.GanttTask td{
+    border: none;
+    border-bottom: 1px #eee solid;
+    padding-top: 0;
+    height: 35px;
+}
+table.GanttTask td .places{
+    width: 100%;
+    display: flex;
+}
+table.GanttTask td div.place{
+    flex: none;
+    width: 60px;
+    height: 35px;
+    border-right: 1px solid #eee;
+    box-sizing: border-box;
+}
+table.GanttTask td .Tname{
+    top: -12px;
+    max-width: 100%;
+}
+.gantt-noflex{
+    flex: none;
+}
+.thinCalendar .GanttWrap .GanttHeadWrap{
+    z-index: 1000;
+}

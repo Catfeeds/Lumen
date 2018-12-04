@@ -1,0 +1,48 @@
+
+.clearfix:after {
+    content: " ";
+    display: block;
+    clear: both;
+    height: 0;
+}
+.clearfix {
+    zoom: 1;
+}
+.div_statistics_container{
+    background-color: #fff;
+    margin:10px;
+    flex-direction: row;
+}
+.div_statistics_container>div{
+    flex:1;
+    display: inline-block;
+    min-height: 500px;
+    min-width: 800px;
+    padding:15px;
+}
+
+.div_procedure_wrapper{
+    background-color: #fff;
+    min-height: 500px;
+}
+table#procedure-table.procedure{
+    width:auto;
+    border: 1px solid #d5d5d5;
+}
+#procedure-table.procedure thead th{
+    background-color: transparent;
+    border: solid 1px #d5d5d5;
+    height:40px;
+    white-space: nowrap;
+    padding:0 15px;
+}
+#procedure-table.procedure tbody td{
+    border: solid 1px #d5d5d5;
+    height:40px;
+    padding:0 15px;
+    text-align: center;
+}
+.cell_width{
+    min-width: 100px;
+    text-align: left;
+}

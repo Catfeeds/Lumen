@@ -1,0 +1,276 @@
+
+/* =================================================test===================================== */
+.task-project {
+    text-align: center;
+    color: #00a0e9;
+    display:flex;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.task-title{
+    width:88%;
+}
+
+.title-font {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.data-time {
+    float: right;
+    margin-top: 12px;
+    padding-right: 1em;
+}
+
+.task-table-card {
+    border-radius: 10px;
+    overflow: hidden;
+    min-height: 80px;
+    box-shadow: #aaa 0px 0px 20px 1px;
+    margin-top: 20px;
+}
+
+.table-header-title {
+    background-color: #00a0e9;
+    display: flex;
+    font-size:16px;
+    color:#fff;
+    height: 40px;
+    line-height: 40px;
+}
+
+.table-list {
+    width: 100%;
+}
+
+.table-list>li {
+    display: flex;
+    border-bottom: 1px solid #eee;
+}
+.table-list>li:last-child{
+    border-bottom: none;
+
+}
+
+.table-list>li>div {
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.progress-box {
+    min-width: 200px;
+    padding: 13px 20px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 14px;
+    border-radius: 20px;
+    display: block;
+    background-color: #f0f0f0;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar>.number-prencent {
+    color: #000;
+    height: 1em;
+    line-height: 1em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
+}
+
+.progress-bar>.progress-autobar {
+    background-color: #85ca46;
+    height: 100%;
+    /* width: 60%; */
+    float: left;
+    border-radius: 20px
+}
+
+.color-green {
+    background-color: #85ca46;
+    display: block;
+    text-align: center;
+}
+
+.color-origin {
+    background-color: #f49d00;
+}
+
+.secend-box {
+    display: flex;
+    width: 100%;
+}
+
+.card-img {
+    flex: 1;
+    margin-right: 14px;
+}
+
+.card-table {
+    flex: 2;
+}
+
+.table-body{
+    height: 246px;
+    overflow-y: auto;
+}
+.img-mask {
+    display: flex
+}
+
+.img-mask>div {
+    flex: 1;
+    height: 246px;
+}
+
+.img-mask>.left-img {}
+
+.img-mask>.right-img {
+    background-color: #1947a5;
+}
+
+.sun-img {
+    margin: 14px 14px;
+    background-color: rgb(255, 216, 26);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+}
+
+.sun-img.sun2 {
+    background: radial-gradient(circle at bottom right, rgb(255, 160, 0), #fff);
+    background-repeat: no-repeat;
+    background-position: left;
+}
+
+.sun-img.moon2 {
+    background: radial-gradient(circle at bottom right, rgb(175, 189, 191), #fff);
+    background-repeat: no-repeat;
+    background-position: left;
+}
+
+.moon::before {
+    display: block;
+    content: '';
+    height: 80%;
+    width: 80%;
+    background-color: #1947a5;
+    border-radius: 50%;
+    transform: translate(60%, -5%)
+}
+
+.img-mask .message {
+    text-align: center;
+    margin-bottom: 2em;
+}
+
+.round-precent {
+    display: flex;
+    justify-content: center;
+}
+
+.round-precent>div {
+    background-color: #fff;
+    box-shadow: #ddd 0px 0px 20px 1px;
+    height: 110px;
+    width: 110px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+}
+
+.prenect-number-round {
+    position: absolute;
+    font-size: 32px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+}
+
+/* 水================================== */
+.water {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 5;
+    bottom: 0;
+    left: 0;
+    background: #85ca46;
+    /* transform: translate(0, 50%); */
+}
+
+.water.origin {
+    background: rgb(255, 185, 52);
+}
+
+.water.blue {
+    background: rgb(0, 160, 233);
+}
+
+.water__wave {
+    width: 200%;
+    position: absolute;
+    bottom: 100%;
+}
+
+.water__wave_back {
+    right: 0;
+    fill: #85ca4675;
+    animation: wave-back 1.4s infinite linear;
+    animation: wave-back 1.4s infinite linear;
+}
+
+.water__wave_back.origin {
+    fill: rgb(255, 220, 153);
+}
+
+.water__wave_back.blue {
+    fill: rgb(127, 207, 244);
+}
+
+.water__wave_front {
+    left: 0;
+    fill: #85ca46;
+    margin-bottom: -1px;
+    animation: wave-front .7s infinite linear;
+    animation: wave-front .7s infinite linear;
+}
+
+.water__wave_front.origin {
+    fill: rgb(255, 185, 52);
+}
+
+.water__wave_front.blue {
+    fill: rgb(0, 160, 233);
+}
+
+@keyframes wave-front {
+    100% {
+        transform: translate(-50%, 0);
+        transform: translate(-50%, 0);
+    }
+}
+
+@keyframes wave-front {
+    100% {
+        transform: translate(-50%, 0);
+        transform: translate(-50%, 0);
+    }
+}
+
+@keyframes wave-back {
+    100% {
+        transform: translate(50%, 0);
+        transform: translate(50%, 0);
+    }
+}

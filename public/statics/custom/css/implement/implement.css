@@ -1,0 +1,116 @@
+
+.templateContent{
+    /*border:solid 1px #d5d5d5;*/
+    padding: 10px;
+}
+.templateContainer{
+    display: flex;
+    border-bottom: solid 1px #d5d5d5;
+    padding-top: 10px;
+}
+.templateContainer .template-left{
+    min-width:80px;
+    white-space: nowrap;
+    min-height: 40px;
+}
+.templateContainer .template-right{
+    flex:6;
+    min-height: 40px;
+}
+.templateContainer .template-left span{
+    font-weight: bold;
+}
+
+.template-right ul li{
+    color: #666;
+    display: inline-block;
+    margin-right: 15px;
+}
+.template-right ul li a{
+    text-decoration: underline;
+    color: #337ab7;
+}
+.template-right ul li a:hover{
+    text-decoration: underline;
+    color: #2a5e92;
+}
+
+.importContainer .import-top{
+    min-height: 50px;
+    line-height: 25px;
+    padding:0 10px;
+}
+.importContainer .import-btn{
+    margin-bottom: 10px;
+}
+.importContainer .import-content{
+    min-height:300px ;
+    border:solid 1px #d5d5d5;
+}
+.el-radio-input .el-radio-inner{
+    width: 15px;
+    height: 15px;
+}
+
+.import_arrow{
+    padding:0 10px;
+}
+
+/*a  upload */
+#addExcel_form .file {
+    position: relative;
+    display: inline-block;
+    background: #6fb3e0;
+    /*background: #D0EEFF;*/
+    /*border: 1px solid #99D3F5;*/
+    /*border-radius: 4px;*/
+    padding: 4px 12px;
+    overflow: hidden;
+    color: #fff;
+    /*color: #1E88C7;*/
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+
+}
+#addExcel_form .file input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+#addExcel_form .file:hover {
+    background: #5c9dc3;
+    text-decoration: none;
+}
+
+#addExcel_form .filename{
+    position: relative;
+    top: -4px;
+    max-width: 350px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    cursor: default;
+}
+#addExcel_form .excelError{
+    border: solid 1px rgba(255, 0, 0, 0.16);
+    height: 26px;
+    line-height: 26px;
+    background-color: rgba(255, 0, 0, 0.13);
+    padding-left: 5px;
+    border-radius: 4px;
+    color: #666;
+    display: none;
+}
+#addExcel_form .excelInput{
+    border:solid 1px #d5d5d5;
+    padding-top: 5px;
+    padding-left: 5px;
+    margin-bottom: 10px;
+}
+#addExcel_form .excelInput:hover{
+    border:solid 1px #F59942;
+}

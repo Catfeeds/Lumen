@@ -1,0 +1,35 @@
+.verno{
+    margin-top: 40px;
+}
+.verno .el-form-item-label{
+    font-size: 24px;
+    margin-left: 14px;
+}
+.time .el-form-item-label{
+    font-size: 18px;
+    margin-left: 12px;
+}
+.detial .el-form-item-label{
+    font-size: 18px;
+    margin-left: 12px;
+}
+.verno #sno{
+    position: relative;
+    font-size: 24px;
+    color: #999;
+}
+.time #stime{
+    position: relative;
+    font-size: 18px;
+    color: #999;
+}
+#detial{
+    float: left;
+    font-size: 14px;
+    margin-left: -82px;
+    margin-top: 40px;
+    color: #999;
+}
+ol li{
+    margin: 8px;
+}

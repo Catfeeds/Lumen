@@ -1,0 +1,195 @@
+.el-tap-wrap .el-tap.none {
+    display: none;
+}
+.el-form-item.saveBtn {
+    position: absolute;
+    right: 25px;
+    top: 9px;
+}
+.el-form-item.saveBtn.edit {
+    position: absolute;
+    right: 25px;
+    top: 0;
+}
+.addBomItem .selectMaterial_container{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    min-height: 400px;
+    max-height: 400px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    border:solid 1px #d5d5d5;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.selectMaterial_tree,.bom_tree_conwrap{
+    -webkit-box-flex:1;
+    -webkit-flex:1;
+    -moz-box-flex:1;
+    -ms-flex:1;
+    flex:1;
+    /*border-right:solid 1px #d5d5d5;*/
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    max-width: 220px;
+    max-height: 400px;
+    overflow: auto;
+    border-right: 1px solid #d5d5d5;
+    background: #fff;
+}
+.bom_tree_conwrap{
+    max-height: 900px;
+}
+.selectMaterial_tree .bom_tree_container,.bom_tree_conwrap .bom_tree_container{
+    flex: none;
+    width: auto;
+    padding-right: 30px;
+}
+.selectMaterial_tree .bom_tree_container .bom-tree{
+    padding-bottom: 20px;
+}
+.selectMaterial_table{
+    -webkit-box-flex:4;
+    -webkit-flex:4;
+    -moz-box-flex:4;
+    -ms-flex:4;
+    flex:4;
+    padding: 5px;
+}
+.select_table_margin{
+    margin:0;
+}
+.query-item li .el-form-item-label{
+    margin-left: 0;
+}
+.query-item {
+    background: #fff;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    padding-top: 10px;
+    margin-right: 10px;
+}
+.query-item li {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-left: 0;
+}
+.query-item li .el-form-item {
+    -webkit-box-flex: 0;
+    -webkit-flex: none;
+    -moz-box-flex: 0;
+    -ms-flex: none;
+    flex: none;
+    width: 33%;
+    padding-right: 10px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+.table-container {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -moz-box-orient: vertical;
+    -moz-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 5px;
+    background-color: #fff;
+}
+table.bom_table thead th {
+    border-bottom: solid 1px #d5d5d5;
+    background-color: #eee;
+    text-align: center;
+    font-size: 12px;
+}
+table.bom_table tbody td.tdleft {
+    text-align: left;
+    padding-left: 15px;
+}
+table.bom_table tbody td {
+    text-align: center;
+    border-bottom: solid 1px #d5d5d5;
+    line-height: 40px;
+}
+.pos-icon {
+    position: absolute;
+    top: 13px;
+    right: 10px;
+    z-index: 9;
+    color: #20a0ff;
+    cursor: pointer;
+}
+.bom_blockquote {
+    background-color: #fff;
+    padding: 10px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+.bom_blockquote h4, .material_block h3, .bom_blockquote h3 {
+    font-size: 14px;
+}
+.basic_info {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+.basic_info.mbasic_info span,.bom-info-button.show-material{
+    position: relative;
+    bottom: 2px;
+}
+.basicForm .el-form-item-div{
+    width:600px;
+}
+#orderInfo_from .errorMessage{
+    display: block;
+    border:solid 1px red;
+}
+
+/* 计划时间表格样式 */
+.plan_table{
+    width:350px;
+    border-left: 1px solid #c2c2c2;
+    border-right: 1px solid #c2c2c2;
+}
+.plan_table .td_bottom{
+    border-bottom:0 !important;
+}
+.progress[data-percent]:after{
+    color: #666666;
+}
+.is-disabled {
+    color: #bfcbd9 !important;
+    cursor: not-allowed;
+    background-image: none !important;
+    background-color: #eef1f6 !important;
+    border-color: #d1dbe5 !important;
+}
+.is-disabled .pop-button{
+    color: #bfcbd9 !important;
+    border-color: #d1dbe5 !important;
+}
+.table-online {
+    background-color: #eef1f6;
+}

@@ -1,0 +1,16 @@
+.el-form-item .el-form-item-label{
+    min-width: 100px;
+}
+.el-form-item input{
+    max-width: 400px;
+}
+.title_order{
+    font-size: 20px;
+
+}
+#pull_all{
+    margin-left: 20px;
+}
+.wrap_table_div{
+    margin-top: 20px;
+}

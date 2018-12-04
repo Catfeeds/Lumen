@@ -1,0 +1,120 @@
+.code_wrap{
+	width: 800px;
+	height: 500px;
+	border-radius: 5px;
+	background: #fff;
+	box-shadow: 1px 1px 5px #333;
+}
+legend{
+	width: auto;
+	margin-bottom: 0;
+	border-bottom: 0;
+	font-size: 12px;
+}
+.info table tbody td{
+	border-bottom: 0;
+	padding-bottom: 10px;
+}
+.el-panel .panel-left{
+	border-right: 1px solid #ccc;
+	width: 155px;
+	height: 467px;
+	overflow: hidden;
+	overflow-y: auto;
+	flex: none;
+}
+.el-panel .panel-right{
+	flex: auto;
+}
+.left .treeul li{
+	line-height: 20px;
+	font-size: 12px;
+}
+.ctreeul{
+	border-left: 1px dashed #ccc;
+}
+.ctreeul li{
+	margin-left: 0;
+}
+.line{
+	display: inline-block;
+	width: 10px;
+	height: 1px;
+	border-top: 1px dashed #ccc;
+}
+.treeli div{
+	cursor: pointer;
+}
+.treeli div.active{
+	color: #20a0ff;
+}
+.el-panel{
+	display: flex;
+}
+.el-panel-wrap .el-panel.active{
+	display: flex;
+}
+.el-panel fieldset{
+	border: 1px solid #ddd;
+    width: 98%;
+    border-radius: 5px;
+    -webkit-padding-start: 20px;
+    box-sizing: border-box;
+    margin: 10px 0 10px 4px;
+}
+.formTemplate .el-form-item{
+	margin-bottom: 0;
+}
+.formTemplate .el-form-item.prefix{
+
+}
+.formTemplate .el-form-item-div{
+	width: auto;
+}
+.el-form-item.preview,.el-form-item.out{
+	margin-bottom: 10px;
+}
+.el-form-item .el-input{
+	height: 24px;
+	box-sizing: border-box;
+	width: 127px;
+}
+/*.el-form-item .el-input.prefixlength{*/
+	/*width: 65px;*/
+/*}*/
+/*.el-form-item.prefix .el-select .el-input{*/
+	/*width: 180px;*/
+/*}*/
+.el-form-item.num .el-input{
+	width: 68px;
+}
+.el-form-item.out .el-input{
+	width: 100%;
+	max-width: none;
+}
+.flex-end{
+	justify-content: flex-end;
+}
+.lable-text{
+	width: 70px;
+}
+table thead th{
+	background: #fff;
+	border: none;
+}
+table.bordered{
+	border: none;
+}
+table.bordered th{
+	padding: 4px;
+}
+.el-select .el-input{
+	width: 130px;
+}
+span.el-input[readonly]{
+	background: #eee;
+}
+.preview label{
+	width: 70px;
+	flex: none;
+}

@@ -1,0 +1,117 @@
+.ui-jqgrid .ui-jqgrid-hbox{
+    padding-right: 0;
+}
+.ui-jqgrid tr.ui-row-ltr td.break-word, .ui-jqgrid tr.ui-row-rtl td.break-word{
+    word-break: break-all;
+    max-width: 200px;
+    white-space: pre-wrap;
+}
+.table_page .row,.table_page .row .col-xs-12{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+.ui-jqgrid .ui-jqgrid-htable th.ui-th-column{
+    border-top: 1px solid #E1E1E1;
+    padding-left: 20px;
+    line-height: 32px;
+    height: 32px;
+}
+.ui-jqgrid .ui-jqgrid-htable th.ui-th-column:first-child{
+    border-left: 1px solid #E1E1E1;
+}
+.ui-jqgrid .ui-jqgrid-htable th div{
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.ui-jqgrid-view>.ui-jqgrid-titlebar {
+    height: 40px;
+    line-height: 24px;
+    color: #FFF;
+    background: #307ECC;
+    padding: 0;
+    font-size: 15px;
+}
+.ui-jqgrid .ui-jqgrid-sortable{
+    height: auto;
+    cursor: default;
+}
+.ui-jqgrid .ui-jqgrid-sortable:hover{
+    color: #707070;
+}
+.ui-jqgrid .ui-jqgrid-htable th span.ui-jqgrid-resize{
+    height: 39px!important;
+}
+.ui-jqgrid tr.ui-row-ltr td, .ui-jqgrid tr.ui-row-rtl td {
+    border-bottom: 1px solid #E1E1E1;
+    padding: 6px 20px 6px 20px;
+    border-color: #E1E1E1;
+}
+
+.ui-jqgrid-btable .ui-widget-content.ui-priority-secondary{
+    background: #fff;
+}
+.ui-jqgrid-btable .ui-widget-content.ui-state-hover{
+    background: #EFF4F7;
+}
+.ui-jqgrid-btable select{
+    height: 30px;
+    line-height: 30px;
+}
+select option, select.form-control option{
+    padding: 5px 4px;
+    height: 30px;
+    -webkit-appearance:none;
+}
+input[type=checkbox].ace.ace-switch.ace-switch-5+.lbl::before{
+    content: "启用\a0\a0\a0\a0\a0\a0\a0\a0关闭"
+}
+#grid-table .tritem td{
+    height: 35px;
+}
+#grid-table td.can-edit:first-child{
+    border-left: 1px solid #E1E1E1;
+}
+#grid-table td.td-action{
+    text-align: right;
+    padding-right: 20px;
+}
+.ui-jqgrid-htable.ui-common-table  #grid-table_myac{
+    text-align: right!important;
+    color: red;
+    padding-right: 20px;
+}
+.errorMessage{
+    display: block;
+}
+.el-form-item .el-form-item-label{
+    flex: none;
+}
+.el-form-item.node .el-select-dropdown{
+    width: 396px;
+}
+.el-input.auto{
+    height: 30px;
+}
+p.noData{
+    line-height: 35px;
+    text-align: center;
+    width: 100%;
+    border-bottom: 1px solid #E1E1E1;
+}
+#grid-table td .el-select-dropdown-item.el-auto span{
+    border-bottom: none;
+}
+
+#grid-table td.auto-complete{
+    overflow: visible;
+}
+#grid-table td.auto-complete .el-select-dropdown{
+    position: absolute;
+}
+#grid-table td:focus{
+    outline: none;
+}
+.ui-jqgrid .ui-jqgrid-bdiv{
+    overflow: visible;
+}

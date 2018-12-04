@@ -1,0 +1,149 @@
+.route_container{
+    /*border:solid 1px #bfcbd9;*/
+    background-color: #f5f5f5;
+    min-height: 300px;
+    overflow: auto;
+    /*max-height: 450px;*/
+    padding: 10px;
+    display: flex;
+}
+.route_container .route_wrap{
+    display: flex;
+}
+.route_container .route_item{
+    border: solid 1px #bfcbd9;
+    min-width: 250px;
+    text-align: center;
+    margin-right: 10px;
+    background-color: #fff;
+}
+.route_container .next_add{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    padding:0 10px;
+    color: #999;
+}
+.route_container .route_item_add{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin:0 10px;
+}
+.route_container .route_item_add span{
+    display: inline-block;
+    padding:20px 10px;
+    border:solid 1px #d5d5d5;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #fff;
+    font-size: 20px;
+    color: #999;
+}
+.route_container .route_item .title{
+    border-bottom: solid 1px #bfcbd9;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+}
+.route_container .route_item .title i{
+    position: relative;
+    left: 35%;
+    color: rgba(227, 0, 0, 0.6);
+    cursor: pointer;
+}
+.route_container .route_item .select_route{
+    min-height: 300px;
+    text-align: left;
+    padding: 8px;
+}
+.route_container .route_item .bottom{
+    border-top: solid 1px #bfcbd9;
+    min-height: 30px;
+}
+.next_list_ul,.proce_list_ul{
+    width:100%;
+    margin: 0;
+    min-height: 80px;
+}
+.next_list_ul li,.proce_list_ul li{
+    border:dashed 1px #d5d5d5;
+    margin-bottom: -1px;
+    line-height: 30px;
+    padding-left: 10px;
+    font-size: 14px;
+    color: #666;
+}
+.next_list_ul li span,.proce_list_ul li span{
+    color: #999;
+}
+.next_list_ul li span{
+    color: rgba(227, 0, 0, 0.6);
+    cursor: pointer;
+}
+.el-form-item.saveBtn{
+    position: absolute;
+    right: 40px;
+    top: 8px;
+}
+.route_line{
+    margin-top: 10px;
+    min-height: 200px;
+    padding: 10px;
+    background-color: #f5f5f5;
+}
+.route_procedure_edit i,.next_node_add i{
+    color: rgba(32, 160, 255, 0.8);
+    cursor: pointer;
+    font-size: 14px;
+}
+.route_practice_wrap{
+    border:solid 1px #bfcbd9;
+    margin-top: 10px;
+    min-height: 300px;
+    padding: 10px;
+    /*max-width: 55%;*/
+}
+.route_practice_wrap .title{
+    border-bottom: solid 1px #bfcbd9;
+}
+.route_practice_wrap .savePracticeLine {
+    margin-left: 50px;
+    color: #fff;
+    background-color: #20a0ff;
+    border-color: #20a0ff;
+    float: right;
+    position: relative;
+    top: -35px;
+}
+.route_practice_wrap .practice_line{
+    margin: 10px 0;
+    padding:0 10px;
+}
+.practice_line .list{
+    display: flex;
+}
+.practice_line ul{
+    flex:1
+}
+.practice_line li{
+    border-bottom: dotted 1px #d5d5d5;
+    line-height: 30px;
+}
+.practice_line .practice_desc{
+    font-size: 14px;
+    margin-left: 20px;
+    color: #999;
+}
+.practice_desc .desc{
+    max-width: 200px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+#searchForm.search_wrap .el-item>div:first-child {
+    margin-top: 2px;
+    width:auto;
+}
+

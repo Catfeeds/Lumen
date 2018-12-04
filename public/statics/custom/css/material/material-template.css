@@ -1,0 +1,223 @@
+.el-checkbox-wrap{
+    border: 1px dashed #aaa;
+    max-width: -webkit-calc(100% -20px);
+    max-width: calc(100% -20px);
+    -webkit-border-radius: 5px;
+            border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+.el-checkbox-template .info{
+	cursor: pointer;
+}
+.el-checkbox-template .info:hover{
+	color: #20a0ff;
+}
+.gongyi_wrap{
+	margin-right: 20px;
+}
+.btnMargin{
+	margin-top: 20px;
+}
+.btnMargin .el-form-item-div{
+	width: 100%;
+}
+.btnMargin .el-form-item-div.btn-group{
+	 -webkit-box-pack: center;
+	 -webkit-justify-content: center;
+	 -moz-box-pack: center;
+	 -ms-flex-pack: center;
+	 justify-content: center;
+ }
+p.title{
+	font-size: 14px;
+	margin-top: 10px;
+}
+.allAttr_wrap{
+	/*flex: auto;*/
+	width: 60%;
+	border: 1px dashed #ccc;
+	-webkit-border-radius: 3px;
+	        border-radius: 3px;
+	padding: 0 5px 5px;
+}
+.attr_def{
+	padding: 5px;
+    background: rgba(32, 160, 255, 0.51);
+    color: #fff;
+    -webkit-border-radius: 6px;
+            border-radius: 6px;
+    -webkit-box-flex: 0;
+    -webkit-flex: none;
+       -moz-box-flex: 0;
+        -ms-flex: none;
+            flex: none;
+    margin: 10px 0 0 10px;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+}
+.attr_def:hover{
+	color: #fff;
+}
+.more_info{
+	background: #fff;
+	padding: 5px;
+	-webkit-border-radius: 2px;
+	        border-radius: 2px;
+	position: absolute;
+	color: #333;
+	display: none;
+}
+.attr_def:hover .more_info{
+	display: block;
+}
+.attr_def p{
+	line-height: 18px;
+	white-space: nowrap;
+}
+.filter_value{
+	width: 150px;
+	margin-right: 10px;
+}
+.table_tbody .el-form-item{
+	margin-bottom: 0;
+}
+.filter_value .el-input{
+	height: 24px;
+	margin-top: 5px;
+	overflow: hidden;
+    -o-text-overflow: ellipsis;
+       text-overflow: ellipsis;
+}
+.filter_checkbox_wrap .el-checkbox_input{
+	vertical-align: middle;
+	margin-right: 2px;
+}
+.div_wrap{
+	width: 100%;
+}
+.value_wrap{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	   -moz-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+}
+.filter_value .el-tag{
+	padding: 0;
+	line-height: 20px;
+	margin-left: 3px;
+}
+.filter_value .el-tag .el-icon-close{
+	right: 0;
+	top: 0;
+	font-size: 16px;
+}
+.value_wrap .el-input-icon.is-reverse{
+    -webkit-transform: translateY(-33%);
+        -ms-transform: translateY(-33%);
+            transform: translateY(-33%);
+}
+.value_wrap .el-select-dropdown{
+	position: fixed;
+	width: 157px;
+}
+.div_con_wrapper{
+	margin-bottom: 30px;
+}
+.div_con_wrapper h4{
+	font-size: 14px;
+}
+.unit-span{
+	display: inline-block;
+    min-width: 20px;
+    font-size: 12px;
+    -webkit-box-flex: 0;
+    -webkit-flex: none;
+       -moz-box-flex: 0;
+        -ms-flex: none;
+            flex: none;
+}
+#addMTemplateAttrFilter_from .el-select-dropdown-item{
+	padding: 0 10px;
+    height: 20px;
+}
+/*属性详细信息*/
+.attr-info-wrap{
+	width: 100%;
+	padding: 10px 20px;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+.attr-info-wrap .attr-item-wrap{
+	width: 100%;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	    -ms-flex-wrap: wrap;
+	        flex-wrap: wrap;
+}
+.attr-info-wrap .attr-item{
+	line-height: 22px;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: flex;
+}
+.attr-info-wrap .attr-item .attr-label{
+	color: #999;
+	display: inline-block;
+	min-width: 40px;
+	-webkit-box-flex: 0;
+	-webkit-flex: none;
+	   -moz-box-flex: 0;
+	    -ms-flex: none;
+	        flex: none;
+}
+.attr-val{
+	max-width: 300px;
+	overflow : hidden;
+	-o-text-overflow: ellipsis;
+	   text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 5;
+	-webkit-box-orient: vertical;
+	word-break: break-all;
+}
+.attr-info-wrap .attr-item .el-checkbox_input{
+	vertical-align: middle;
+}
+.attr-info-wrap .attr-item-wrap .attr-item{
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	   -moz-box-flex: 1;
+	    -ms-flex: 1;
+	        flex: 1;
+	min-width: 130px;
+	max-width: 180px;
+}
+.attr-info-wrap .attr-item-wrap .attr-val{
+	display: inline-block;
+	overflow: hidden;
+    max-width: none;
+    -webkit-box-flex: 1;
+    -webkit-flex: auto;
+       -moz-box-flex: 1;
+        -ms-flex: auto;
+            flex: auto;
+    -o-text-overflow: ellipsis;
+       text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/*属性详细信息*/

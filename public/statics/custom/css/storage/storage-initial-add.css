@@ -1,0 +1,115 @@
+#addSTinit_form .el-form-item{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+       -moz-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    margin-bottom: 18px;
+    width: 50%;
+}
+.qrcode-conten{
+    position: absolute;
+    margin-left: 60%;
+    top: 18px;
+    border: 1px #ccc solid;
+    background: #fff;
+    padding: 6px;
+    right: 220px;
+    border-radius: 4px;
+
+   
+}
+.work_order_botton{
+    position: absolute;
+    margin-left: 60%;
+    top: 110px;
+    background: #fff;
+    padding: 6px;
+    right: 120px;
+    border-radius: 4px;
+
+
+}
+#qrCodeIco{
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    /*background-image: url("../../img/login_logo1.png");  */
+}
+#addSTinit_form .el-form-item-div{
+    width: 500px;
+    -webkit-box-flex: 0;
+    -webkit-flex: none;
+       -moz-box-flex: 0;
+        -ms-flex: none;
+            flex: none;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+#addSTinit_form .el-form-item{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+#addSTinit_form .el-form-item-label{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-left: 30px;
+    -webkit-box-sizing: content-box;
+       -moz-box-sizing: content-box;
+            box-sizing: content-box;
+}
+#addSTinit_form .el-select-dropdown{
+    position: absolute;
+}
+.dataTypeWrap{
+    padding: 10px 5px 0 0;
+}
+.item-wrap{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: end;
+    -webkit-align-items: flex-end;
+       -moz-box-align: end;
+        -ms-flex-align: end;
+            align-items: flex-end;
+}
+.dataTypeWrap .checkboxwrap{
+    width: 95px;
+    -webkit-box-flex: 0;
+    -webkit-flex: none;
+       -moz-box-flex: 0;
+        -ms-flex: none;
+            flex: none;
+}
+.select-item{
+    margin-left: 30px;
+}
+#addSTinit_form .el-item-wrap{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+#addSTinit_form .el-item-wrap .el-form-item-label{
+    margin-left: 0;
+    padding: 11px 0;
+    min-width: 63px;
+}
